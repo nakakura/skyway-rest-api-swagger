@@ -21,7 +21,6 @@ tags:
   - name: 3.media
     description: MediaStreamを利用するためのMediaConnectionオブジェクトと転送するメディアの送受信方法について指定します
     
-    
 schemes:
   - http
   
@@ -31,7 +30,7 @@ paths:
       tags:
         - 0.engines
       summary: WebRTCエンジンとしてJanusを利用します
-      description: WebRTCエンジンとしてJanusを利用するためにリソースの割当を行います
+      description: WebRTCエンジンとしてJanusを利用するためにリソースの割当を行います。この際Pluginのロードも同時に行います
       operationId: engines
       consumes:
         - application/json
@@ -40,7 +39,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: Janusにアクセスするためのエンドポイントと利用するPluginを指定します
+          description: Janusにアクセスするためのエンドポイントと利用するPluginを指定します。PluginはArrayで指定し、記載順にパイプライン化します。
           required: true
           schema:
             $ref: '#/definitions/JanusOptions'
@@ -81,6 +80,7 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout
+          
   /engines/janus/{engine_id}:          
     delete:
       tags:
@@ -141,42 +141,257 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout
-            
-  /engines/libwebrtc:
-    post:
+    patch:
       tags:
         - 0.engines
-      description: 'libWebRTCリソースの割当'        
-      summary: 将来的に作るかも。APIのイメージ感のために暫定的に記載
-      responses:
-        '204':
-          description: No Content
-
-  /engines/libwebrtc/{engine_id}:
-    delete:
-      tags:
-        - 0.engines
-      summary: 将来的に作るかも。APIのイメージ感のために暫定的に記載
-      description: 'libWebRTCリソースの開放'
-      operationId: attachment_libwebrtc
+      summary: WebRTCエンジンの解放処理を行います
+      description: PLUGIN動作変更のためのメッセージを通知します
+      operationId: engines_patch
+      produces:
+        - application/json
       parameters:
         - name: engine_id
           type: integer
           format: uint64
           in: path
-          description: libWebRTC内に割り当てたリソースを特定するためのIDです
+          description: Janus内に割り当てたリソースを特定するためのIDです
           required: true
         - name: token
           type: string
           in: query
-          description: libWebRTCのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true      
-      produces:
-        - application/json
+          description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
+        - in: body
+          name: body
+          description: Pluginに送るメッセージを指定します
+          required: true
+          schema:
+            $ref: '#/definitions/PluginMessageObject'
       responses:
         '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PluginMessageObject'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "ENGINES_PATCH"
+              params: 
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          enum:
+                          - "engine_id"
+                          - "token"
+                          example: engine_id
+                        message:
+                          type: string
+                          example: "engine_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(engine_idが間違っている場合)          
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+          
+  /engines/libwebrtc:
+    post:
+      tags:
+        - 0.engines
+      summary: WebRTCエンジンとしてJanusを利用します
+      description: WebRTCエンジンとしてJanusを利用するためにリソースの割当を行います。この際Pluginのロードも同時に行います
+      operationId: libwebrtc
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Janusにアクセスするためのエンドポイントと利用するPluginを指定します
+          required: true
+          schema:
+            $ref: '#/definitions/JanusOptions'
+      responses:
+        '201':
           description: successful operation
-      
+          schema:
+            $ref: '#/definitions/EnginesResponse'
+        '400':
+          description: Invalid Input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "ENGINES_CREATE"
+              params: 
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          enum:
+                          - "server"
+                          - "plugin"
+                          example: server
+                        message:
+                          type: string
+                          example: "Janus Server not found"
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+          
+  /engines/libwebrtc/{engine_id}:          
+    delete:
+      tags:
+        - 0.engines
+      summary: WebRTCエンジンの解放処理を行います
+      description: WebRTCエンジンとして割り当てたlibwebrtcのリソースを開放します。全てのWebRTCセッションとデータ受け渡しのためのUDPポートをクローズします
+      operationId: libwebrtc_delete
+      produces:
+        - application/json
+      parameters:
+        - name: engine_id
+          type: integer
+          format: uint64
+          in: path
+          description: Janus内に割り当てたリソースを特定するためのIDです
+          required: true
+        - name: token
+          type: string
+          in: query
+          description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "ENGINES_DELETE"
+              params: 
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          enum:
+                          - "engine_id"
+                          - "token"
+                          example: engine_id
+                        message:
+                          type: string
+                          example: "engine_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(engine_idが間違っている場合)          
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+    patch:
+      tags:
+        - 0.engines
+      summary: WebRTCエンジンの解放処理を行います
+      description: PLUGIN動作変更のためのメッセージを通知します
+      operationId: engines_patch_libwebrtc
+      produces:
+        - application/json
+      parameters:
+        - name: engine_id
+          type: integer
+          format: uint64
+          in: path
+          description: Janus内に割り当てたリソースを特定するためのIDです
+          required: true
+        - name: token
+          type: string
+          in: query
+          description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
+        - in: body
+          name: body
+          description: Pluginに送るメッセージを指定します
+          required: true
+          schema:
+            $ref: '#/definitions/PluginMessageObject'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PluginMessageObject'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "ENGINES_PATCH"
+              params: 
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          enum:
+                          - "engine_id"
+                          - "token"
+                          example: engine_id
+                        message:
+                          type: string
+                          example: "engine_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(engine_idが間違っている場合)          
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout      
 
 
 #========================start peer section============================
@@ -294,142 +509,6 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout                              
-
-  /peers/{peer_id}/call:
-    post:
-      tags:
-        - 1.peers
-      summary: リモートのPeerへのMediaConnection確立を開始します
-      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
-      operationId: peer_call
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-      - name: "peer_id"
-        in: "path"
-        description: 接続対象のリモートのPeerのpeer_idを指定します
-        required: true
-        type: "string"
-        format: "string"
-      - name: token
-        type: string
-        in: query
-        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します   
-        required: true        
-      - in: body
-        name: body
-        description: 転送するMediaについての情報を指定します
-        required: true
-        schema:
-          $ref: '#/definitions/PeerCallOptions'
-      responses:
-        '202':
-          description: Accepted
-          schema:
-            $ref: '#/definitions/PeerCallResponse'
-        '400':
-          description: Invalid input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "PEERS_CALL"
-              params: 
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors: 
-                    type: array
-                    items: 
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          example: peer_id
-                        message:
-                          type: string
-                          example: "peer_id field is not specified"
-        '403':
-          description: Forbidden(tokenが間違っている場合)
-        '404':
-          description: Not Found(peer_idが間違っている場合)
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout    
-
-  /peers/{peer_id}/connect:
-    post:
-      tags:
-        - 1.peers
-      summary: リモートのPeerへのDataConnectionConnection確立を開始します
-      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
-      operationId: peer_connect
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-      - name: "peer_id"
-        in: "path"
-        description: "接続対象のPeerのidを指定します"
-        required: true
-        type: "string"
-        format: "string"
-      - name: token
-        type: string
-        in: query
-        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します   
-        required: true           
-      - in: body
-        name: body
-        description: 転送するDataについての情報を指定します
-        required: true
-        schema:
-          $ref: '#/definitions/PeerConnectOptions'
-      responses:
-        '202':
-          description: Accepted
-          schema:
-            $ref: '#/definitions/PeerConnectResponse'
-        '400':
-          description: Invalid input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "PEERS_CONNECT"
-              params: 
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors: 
-                    type: array
-                    items: 
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          example: peer_id
-                        message:
-                          type: string
-                          example: "peer_id field is not specified"
-        '403':
-          description: Forbidden(tokenが間違っている場合)
-        '404':
-          description: Not Found(peer_idが間違っている場合)          
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout    
 
   /peers/{peer_id}/events:
     get:
@@ -669,6 +748,63 @@ paths:
         '408':
           description: Request Timeout     
 
+  /data/connections:
+    post:
+      tags:
+        - 2.data
+      summary: リモートのPeerへのDataConnectionConnection確立を開始します
+      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      operationId: data_connections_create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+      - in: body
+        name: body
+        description: 転送するDataについての情報を指定します
+        required: true
+        schema:
+          $ref: '#/definitions/PeerConnectOptions'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/PeerConnectResponse'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_CREATE"
+              params: 
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)          
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout    
+          
   /data/connections/{data_connection_id}:
     delete:
       tags:
@@ -1026,6 +1162,63 @@ paths:
         '408':
           description: Request Timeout     
 
+  /media/connections:
+    post:
+      tags:
+        - 3.media
+      summary: リモートのPeerへのMediaConnection確立を開始します
+      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      operationId: media_connection_create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+      - in: body
+        name: body
+        description: 転送するMediaについての情報を指定します
+        required: true
+        schema:
+          $ref: '#/definitions/PeerCallOptions'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/PeerCallResponse'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_CREATE"
+              params: 
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors: 
+                    type: array
+                    items: 
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(tokenが間違っている場合)
+        '404':
+          description: Not Found(peer_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout    
+          
   /media/connections/{media_connection_id}:
     delete:
       tags:
@@ -1335,6 +1528,7 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout        
+          
             
 #========================start definition section============================
 
@@ -1343,17 +1537,19 @@ definitions:
 #POST /engines/janus
   JanusOptions:
     type: object
-    required: [ "server", "plugin" ]
+    required: [ "server", "plugins" ]
     properties:
       server:  
         description: Janusにアクセスするためのエンドポイントを指定します
         type: string
         example: "http://127.0.0.1:8088/janus"
         format: string
-      plugin:
+      plugins:
         description: Janusで利用するプラグインを指定します      
-        type: string
-        example: "janus.plugin.HOGEHOGE"
+        type: array
+        items:
+          type: string
+        example: ["com.ntt.multipath", "com.ntt.sync"]
         format: string
 
   EnginesResponse:
@@ -1380,9 +1576,21 @@ definitions:
         example: "9cf6b7d2-6220-49d5-bfea-387454fe23f0"
         description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
     
-#DELETE /engines
+#PATCH /engines
 
-      
+  PluginMessageObject: 
+    type: object
+    required: [ "plugin_name", "message" ]
+    properties:
+      plugin_name:
+        type: string
+        format: uint64
+        example: com.ntt.passthrough
+        description: pluginを特定するための文字列です
+      message:
+        type: object
+        description: Pluginに与えるJSONのメッセージです。フォーマットはPluginに応じて変わります
+        
 #========================start peer section============================
 
   PeerOptions:
@@ -1436,8 +1644,15 @@ definitions:
 #POST /peers/ID/media_connections
   PeerCallOptions:
     type: object
-    required: [ "target_id", "constraints", "engine_params" ]
+    required: [ "peer_id", "token", "target_id", "constraints", "engine_params" ]
     properties:
+      peer_id:
+        description: "接続対象のPeerのidを指定します"
+        type: "string"
+        format: "string"
+      token:
+        type: string
+        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します      
       target_id:
         type: string
         example: ID_BAR
@@ -1488,14 +1703,23 @@ definitions:
 
   PeerConnectOptions:
     type: object
-    required: [ "target_id", "params" ]
+    required: [ "peer_id", "token", "target_id", "params",  "engine_params" ]
     properties:
+      peer_id:
+        description: "接続対象のPeerのidを指定します"
+        type: "string"
+        format: "string"
+      token:
+        type: string
+        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します   
       target_id:
         type: string
         example: ID_BAR
         description: 接続対象のpeer_idを指定します
       params:
         $ref: '#/definitions/DataSockParameters' 
+      engine_params:
+        $ref: '#/definitions/EngineParameters'              
 
   PeerConnectResponse: 
     type: object
