@@ -20,10 +20,10 @@ tags:
     description: DataChannelを利用するためのDataConnectionオブジェクトと転送するデータの送受信方法について指定します
   - name: 3.media
     description: MediaStreamを利用するためのMediaConnectionオブジェクトと転送するメディアの送受信方法について指定します
-    
+
 schemes:
   - http
-  
+
 paths:
   /engines/janus:
     post:
@@ -56,13 +56,13 @@ paths:
               command_type:
                 type: string
                 example: "ENGINES_CREATE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -80,8 +80,8 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout
-          
-  /engines/janus/{engine_id}:          
+
+  /engines/janus/{engine_id}:
     delete:
       tags:
         - 0.engines
@@ -113,13 +113,13 @@ paths:
               command_type:
                 type: string
                 example: "ENGINES_DELETE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -134,7 +134,7 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(engine_idが間違っている場合)          
+          description: Not Found(engine_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
@@ -180,13 +180,13 @@ paths:
               command_type:
                 type: string
                 example: "ENGINES_PATCH"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -201,14 +201,14 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(engine_idが間違っている場合)          
+          description: Not Found(engine_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
           description: Request Timeout
-          
+
   /engines/libwebrtc:
     post:
       tags:
@@ -240,13 +240,13 @@ paths:
               command_type:
                 type: string
                 example: "ENGINES_CREATE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -264,8 +264,8 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout
-          
-  /engines/libwebrtc/{engine_id}:          
+
+  /engines/libwebrtc/{engine_id}:
     delete:
       tags:
         - 0.engines
@@ -297,13 +297,13 @@ paths:
               command_type:
                 type: string
                 example: "ENGINES_DELETE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -318,7 +318,7 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(engine_idが間違っている場合)          
+          description: Not Found(engine_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
@@ -364,13 +364,13 @@ paths:
               command_type:
                 type: string
                 example: "ENGINES_PATCH"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -385,13 +385,13 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(engine_idが間違っている場合)          
+          description: Not Found(engine_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout      
+          description: Request Timeout
 
 
 #========================start peer section============================
@@ -427,13 +427,13 @@ paths:
               command_type:
                 type: string
                 example: "PEERS_CLEATE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -449,9 +449,9 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout        
-  
-  /peers/{peer_id}: 
+          description: Request Timeout
+
+  /peers/{peer_id}:
     delete:
       tags:
         - 1.peers
@@ -471,7 +471,7 @@ paths:
         - name: token
           type: string
           in: query
-          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します   
+          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '204':
@@ -484,13 +484,13 @@ paths:
               command_type:
                 type: string
                 example: "PEERS_DELETE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -502,13 +502,13 @@ paths:
         '403':
           description: Forbidden(key, domainが間違っている場合)
         '404':
-          description: Not Found(peer_idが間違っている場合)            
+          description: Not Found(peer_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout                              
+          description: Request Timeout
 
   /peers/{peer_id}/events:
     get:
@@ -527,11 +527,11 @@ paths:
           description: "接続対象のPeerのidを指定します"
           required: true
           type: "string"
-          format: "string"      
+          format: "string"
         - name: token
           type: string
           in: query
-          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します   
+          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '200':
@@ -546,13 +546,13 @@ paths:
               command_type:
                 type: string
                 example: "PEERS_EVENTS"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -564,13 +564,13 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(peer_idが間違っている場合)                
+          description: Not Found(peer_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout    
+          description: Request Timeout
 
   /peers/{peer_id}/status:
     get:
@@ -589,11 +589,11 @@ paths:
           description: "接続対象のPeerのidを指定します"
           required: true
           type: "string"
-          format: "string"      
+          format: "string"
         - name: token
           type: string
           in: query
-          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
+          description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '200':
@@ -608,13 +608,13 @@ paths:
               command_type:
                 type: string
                 example: "PEERS_STATUS"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -626,14 +626,14 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(peer_idが間違っている場合)                
+          description: Not Found(peer_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout                
-  
+          description: Request Timeout
+
 
 #========================start Data section============================
 
@@ -668,13 +668,13 @@ paths:
               command_type:
                 type: string
                 example: "DATA_CREATE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -688,9 +688,9 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout       
-          
-  /data/{data_id}:          
+          description: Request Timeout
+
+  /data/{data_id}:
     delete:
       tags:
         - 2.data
@@ -722,13 +722,13 @@ paths:
               command_type:
                 type: string
                 example: "DATA_DELETE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -740,13 +740,13 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(data_connection_idが間違っている場合)            
+          description: Not Found(data_connection_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout     
+          description: Request Timeout
 
   /data/connections:
     post:
@@ -779,13 +779,13 @@ paths:
               command_type:
                 type: string
                 example: "DATA_CONNECTION_CREATE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -797,14 +797,14 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(peer_idが間違っている場合)          
+          description: Not Found(peer_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout    
-          
+          description: Request Timeout
+
   /data/connections/{data_connection_id}:
     delete:
       tags:
@@ -822,12 +822,12 @@ paths:
           description: DataConnectionを特定するためのidを指定します
           required: true
           type: "integer"
-          format: "uint64"      
+          format: "uint64"
         - name: token
           type: string
           in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
-          required: true 
+          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
       responses:
         '204':
           description: No Content
@@ -839,13 +839,13 @@ paths:
               command_type:
                 type: string
                 example: "DATA_CONNECTION_DELETE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -857,15 +857,15 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(data_idが間違っている場合)            
+          description: Not Found(data_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout     
+          description: Request Timeout
 
-            
+
   /data/connections/{data_connection_id}/redirect:
     post:
       tags:
@@ -883,18 +883,18 @@ paths:
           description: "DataConnectionを特定するためのidを指定します"
           required: true
           type: "integer"
-          format: "uint64"  
+          format: "uint64"
         - name: token
           type: string
           in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
-          required: true           
+          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
         - in: body
           name: body
           description: 転送するDataとDataの転送先情報を指定します
           required: true
           schema:
-            $ref: '#/definitions/DataConnectionRedirectOptions'      
+            $ref: '#/definitions/DataConnectionRedirectOptions'
       responses:
         '200':
           description: successful operation
@@ -906,13 +906,13 @@ paths:
               command_type:
                 type: string
                 example: "DATA_CONNECTION_REDIRECT"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -924,14 +924,14 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(data_connection_idが間違っている場合)               
+          description: Not Found(data_connection_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout     
-            
+          description: Request Timeout
+
   /data/connections/{data_connection_id}/events:
     get:
       tags:
@@ -947,12 +947,12 @@ paths:
           description: "DataConnectionを特定するためのidを指定します"
           required: true
           type: "integer"
-          format: "uint64"      
+          format: "uint64"
         - name: token
           type: string
           in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
-          required: true   
+          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
       responses:
         '200':
           description: successful operation
@@ -966,13 +966,13 @@ paths:
               command_type:
                 type: string
                 example: "DATA_CONNECTION_EVENTS"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -988,7 +988,7 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout     
+          description: Request Timeout
 
   /data/connections/{data_connection_id}/status:
     get:
@@ -1005,11 +1005,11 @@ paths:
           description: "DataConnectionを特定するためのIDを指定します"
           required: true
           type: "string"
-          format: "string"      
+          format: "string"
         - name: token
           type: string
           in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
+          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '200':
@@ -1024,13 +1024,13 @@ paths:
               command_type:
                 type: string
                 example: "DATA_CONNECTION_STATUS"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1046,8 +1046,8 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout        
-            
+          description: Request Timeout
+
 #========================start Stream section============================
 
 
@@ -1082,13 +1082,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_CREATE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1102,7 +1102,7 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout     
+          description: Request Timeout
 
   /media/{media_id}:
     delete:
@@ -1123,7 +1123,7 @@ paths:
         - name: token
           type: string
           in: query
-          description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
+          description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '204':
@@ -1136,13 +1136,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_DELETE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1154,13 +1154,13 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(media_idが間違っている場合)            
+          description: Not Found(media_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout     
+          description: Request Timeout
 
   /media/connections:
     post:
@@ -1193,13 +1193,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_CONNECTION_CREATE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1217,8 +1217,8 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout    
-          
+          description: Request Timeout
+
   /media/connections/{media_connection_id}:
     delete:
       tags:
@@ -1236,12 +1236,12 @@ paths:
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
           type: "integer"
-          format: "uint64"      
+          format: "uint64"
         - name: token
           type: string
           in: query
-          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
-          required: true 
+          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
       responses:
         '204':
           description: No Content
@@ -1253,13 +1253,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_CONNECTION_DELETE"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1271,13 +1271,13 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(media_connection_idが間違っている場合)            
+          description: Not Found(media_connection_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout     
+          description: Request Timeout
 
   /media/connections/{media_connection_id}/answer:
     post:
@@ -1296,11 +1296,11 @@ paths:
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
           type: "integer"
-          format: "uint64"   
+          format: "uint64"
         - name: token
           type: string
           in: query
-          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
+          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
         - in: body
           name: body
@@ -1321,13 +1321,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_CONNECTION_ANSWER"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1339,13 +1339,13 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(media_connection_idが間違っている場合)            
+          description: Not Found(media_connection_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout    
+          description: Request Timeout
 
   /media/connections/{media_connection_id}/redirect:
     post:
@@ -1364,18 +1364,18 @@ paths:
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
           type: "integer"
-          format: "uint64"  
+          format: "uint64"
         - name: token
           type: string
           in: query
           description: MediaStream利用に必要なワンタイムトークン
-          required: true           
+          required: true
         - in: body
           name: body
           description: SkyWayサーバへアクセスするための情報
           required: true
           schema:
-            $ref: '#/definitions/MediaConnectionRedirectOptions'      
+            $ref: '#/definitions/MediaConnectionRedirectOptions'
       responses:
         '200':
           description: successful operation
@@ -1387,13 +1387,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_CONNECTION_REDIRECT"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1405,14 +1405,14 @@ paths:
         '403':
           description: Forbidden(tokenが間違っている場合)
         '404':
-          description: Not Found(media_connection_idが間違っている場合)            
+          description: Not Found(media_connection_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout    
-          
+          description: Request Timeout
+
   /media/connections/{media_connection_id}/events:
     get:
       tags:
@@ -1428,12 +1428,12 @@ paths:
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
           type: "integer"
-          format: "uint64"  
+          format: "uint64"
         - name: token
           type: string
           in: query
-          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します 
-          required: true 
+          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          required: true
       responses:
         '200':
           description: successful operation
@@ -1447,13 +1447,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_CONNECTION_EVENTS"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1469,8 +1469,8 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout    
-            
+          description: Request Timeout
+
   /media/connections/{media_connection_id}/status:
     get:
       tags:
@@ -1486,7 +1486,7 @@ paths:
           description: "MediaConnectionを特定するためのIDを指定します"
           required: true
           type: "string"
-          format: "string"      
+          format: "string"
         - name: token
           type: string
           in: query
@@ -1505,13 +1505,13 @@ paths:
               command_type:
                 type: string
                 example: "MEDIA_CONNECTION_STATUS"
-              params: 
+              params:
                 type: object
                 required: [ "errors" ]
                 properties:
-                  errors: 
+                  errors:
                     type: array
-                    items: 
+                    items:
                       type: object
                       properties:
                         field:
@@ -1527,9 +1527,9 @@ paths:
         '406':
           description: Not Acceptable
         '408':
-          description: Request Timeout        
-          
-            
+          description: Request Timeout
+
+
 #========================start definition section============================
 
 definitions:
@@ -1539,13 +1539,13 @@ definitions:
     type: object
     required: [ "server", "plugins" ]
     properties:
-      server:  
+      server:
         description: Janusにアクセスするためのエンドポイントを指定します
         type: string
         example: "http://127.0.0.1:8088/janus"
         format: string
       plugins:
-        description: Janusで利用するプラグインを指定します      
+        description: Janusで利用するプラグインを指定します
         type: array
         items:
           type: string
@@ -1562,7 +1562,7 @@ definitions:
       params:
         $ref: '#/definitions/EngineParameters'
 
-  EngineParameters: 
+  EngineParameters:
     type: object
     required: [ "engine_id", "token" ]
     properties:
@@ -1575,10 +1575,10 @@ definitions:
         type: string
         example: "9cf6b7d2-6220-49d5-bfea-387454fe23f0"
         description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-    
+
 #PATCH /engines
 
-  PluginMessageObject: 
+  PluginMessageObject:
     type: object
     required: [ "plugin_name", "message" ]
     properties:
@@ -1590,7 +1590,7 @@ definitions:
       message:
         type: object
         description: Pluginに与えるJSONのメッセージです。フォーマットはPluginに応じて変わります
-        
+
 #========================start peer section============================
 
   PeerOptions:
@@ -1607,7 +1607,7 @@ definitions:
         type: string
         format: string
         example: "example.com"
-      peer_id: 
+      peer_id:
         description: 他のピアがこのピアへ接続するときに使われるIDです。もしIDが指定されない場合、ブローカサーバがIDを生成します。
         type: string
         format: string
@@ -1619,8 +1619,8 @@ definitions:
       debug:
         description: debugレベルにしたがってログを出力します。デフォルト値は0です。<br/>0ログを出力しません。<br/> 1エラーのみログ出力します。<br/> 2エラーと警告をログ出力します。<br/> 3すべてのログを出力します。
         type: integer
-        enum: [0, 1, 2, 3]     
-        
+        enum: [0, 1, 2, 3]
+
   PeerResponse:
     type: object
     required: [ "command_type", "params"]
@@ -1640,7 +1640,7 @@ definitions:
             type: string
             example: "9749250e-d157-4f80-9ee2-359ce8524308"
             description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-            
+
 #POST /peers/ID/media_connections
   PeerCallOptions:
     type: object
@@ -1652,7 +1652,7 @@ definitions:
         format: "string"
       token:
         type: string
-        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します      
+        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
       target_id:
         type: string
         example: ID_BAR
@@ -1660,13 +1660,27 @@ definitions:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       engine_params:
-        $ref: '#/definitions/EngineParameters'        
+        $ref: '#/definitions/EngineParameters'
 
   PeerCallConstraints:
     type: object
     required: [ "video", "audio" ]
     properties:
-      video: 
+      metadata:
+        type: string
+      video_band_width:
+        type: integer
+      audio_band_width:
+        type: integer
+      video_codec:
+        type: string
+      audio_codec:
+        type: string
+      videoReceiveEnabled:
+        type: boolean
+      audioReceiveEnabled:
+        type: boolean
+      video:
         description: Videoを転送するかどうか指定します
         type: boolean
         example: true
@@ -1678,8 +1692,8 @@ definitions:
         example: true
       audio_params:
         $ref: '#/definitions/PeerMediaParameters'
-        
-  PeerCallResponse: 
+
+  PeerCallResponse:
     type: object
     required: [ "command_type", "params"]
     properties:
@@ -1689,39 +1703,72 @@ definitions:
       params:
         type: object
         properties:
-          media_connection_id: 
+          media_connection_id:
             type: integer
             format: uint64
             example: 56565656
             description: MediaConnectionを特定するためのIDです
-          token: 
+          token:
             type: string
             example:  "5951284d-5ac7-436e\n\t\t\t\t\t-aafa-e2a9a0a28d63"
             description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-            
-#POST /peers/ID/data_connections     
+
+#POST /peers/ID/data_connections
 
   PeerConnectOptions:
     type: object
     required: [ "peer_id", "token", "target_id", "params",  "engine_params" ]
     properties:
       peer_id:
-        description: "接続対象のPeerのidを指定します"
+        description: "接続元のPeerのidを指定します"
         type: "string"
         format: "string"
       token:
         type: string
-        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します   
+        description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+      options:
+        type: object
+        properties:
+          metadata:
+            type: "string"
+            format: "string"
+            description:
+              接続相手に渡される任意の文字列です
+          serialization:
+            type: string
+            format: "string"
+            description: 送信時のシリアライズ方法を指定します。'binary', 'json', 'none'のいずれかが選択可能です
+          dcInit:
+            $ref: '#/definitions/DcInit'
       target_id:
         type: string
         example: ID_BAR
         description: 接続対象のpeer_idを指定します
       params:
-        $ref: '#/definitions/DataSockParameters' 
+        $ref: '#/definitions/DataSockParameters'
       engine_params:
-        $ref: '#/definitions/EngineParameters'              
+        $ref: '#/definitions/EngineParameters'
 
-  PeerConnectResponse: 
+
+  DcInit:
+    type: object
+    properties:
+      ordered:
+        type: "boolean"
+      maxPacketLifeTime:
+        type: "integer"
+      maxRetransmits:
+        type: "integer"
+      protocol:
+        type: "string"
+      negotiated:
+        type: "boolean"
+      id:
+        type: "integer"
+      priority:
+        type: "string"
+
+  PeerConnectResponse:
     type: object
     required: [ "command_type", "params"]
     properties:
@@ -1732,23 +1779,23 @@ definitions:
         type: object
         required: [ "data_connection_id", "data_port" ]
         properties:
-          data_connection_id: 
+          data_connection_id:
             type: integer
             format: uint64
             example: 9292929292
-            description: DataConnectionを特定するためのIDです            
+            description: DataConnectionを特定するためのIDです
           token:
             description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
             type: string
-            example: "9749250e-d157-4f80-9ee2-359ce8524308"    
-    
-          
+            example: "9749250e-d157-4f80-9ee2-359ce8524308"
+
+
 #GET /peers/ID/events
   PeerEventMessage:
     type: object
     required: [ "event" ]
     properties:
-      event: 
+      event:
         description: イベントの種別を示します
         type: string
         enum:
@@ -1756,19 +1803,19 @@ definitions:
         - "connection"
         - "call"
         - "close"
-        - "error"  
+        - "error"
         example: "TYPE_OF_EVENT"
-      open_params: 
+      open_params:
         type: object
-      connection_params: 
+      connection_params:
         type: object
       call_params:
         $ref: '#/definitions/CallParametsers'
       close_params:
         type: object
-      error_message: 
+      error_message:
         description: エラーの内容を示します
-        type: string        
+        type: string
         enum:
         - "browser-incompatible"
         - "invalid-id"
@@ -1777,8 +1824,8 @@ definitions:
         - "ssl-unavailable"
         - "server-disconnected"
         - "server-error"
-        - "socket-error"        
-        - "socket-closed"   
+        - "socket-error"
+        - "socket-closed"
 
   CallParametsers:
     type: object
@@ -1788,22 +1835,22 @@ definitions:
         description: Callを特定するためのIDです
         type: integer
         format: uint16
-        example: 61616161    
+        example: 61616161
       token:
         type: string
         description: Call利用に必要なワンタイムトークン
-        example: "2326d265-1fcb-413f-a7d5-1b1e87b52abc"  
-        
+        example: "2326d265-1fcb-413f-a7d5-1b1e87b52abc"
+
 #GET /peers/ID/status
   PeerStatusMessage:
     type: object
     required: [ "peer_id", "disconnected" ]
     properties:
-      peer_id: 
+      peer_id:
         description: Peerオブジェクトを特定するためのIDです
         type: string
         example: "ID_FOO"
-      disconnected: 
+      disconnected:
         type: boolean
         example: false
 
@@ -1819,16 +1866,16 @@ definitions:
       token:
         type: string
         description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "06346afb-341f-41da-a432-4560f3cfc338"      
+        example: "06346afb-341f-41da-a432-4560f3cfc338"
 
-#========================start DataConnection section============================     
+#========================start DataConnection section============================
 
 #GET /data_connections/ID/events
   DataConnectionEventMessage:
     type: object
     required: [ "event" ]
     properties:
-      event: 
+      event:
         description: イベントの種別を示します
         type: string
         enum:
@@ -1836,13 +1883,13 @@ definitions:
         - "close"
         - "error"
         example: "TYPE_OF_EVENT"
-      open_options: 
-        type: object        
-      close_options: 
+      open_options:
         type: object
-      error_message: 
+      close_options:
+        type: object
+      error_message:
         description: エラーの内容を示します
-        type: string        
+        type: string
 
 #GET /data_connection/ID/status
   DataConnectionStatusMessage:
@@ -1853,12 +1900,12 @@ definitions:
         description: コネクションに関連付けされる、RTCPeerConnectionへの参照です。peer_idを出力します
         type: integer
         format: uint64
-      peer: 
+      peer:
         description: コネクションの相手側のpeer_idです
         type: string
         example: "ID_BAR"
-      buffersize: 
-        description: ブラウザのバッファが一杯になった場合に、キューされるメッセージのサイズです。    
+      buffersize:
+        description: ブラウザのバッファが一杯になった場合に、キューされるメッセージのサイズです。
         type: integer
       label:
         description: コネクションが開始されたときにPeerJSからアサインされる、または指定されるオプションのラベルです。
@@ -1871,7 +1918,7 @@ definitions:
         type: boolean
       reliable:
         description: 信頼性のあるdata channelの場合にtrueです。コネクションの開始時に定義されます。
-        type: boolean        
+        type: boolean
       seliarization:
         description: コネクションを通じて送信されるデータのserializeフォーマットです。binary (デフォルト値)、 binary-utf8、 json、 または none となります。
         type: string
@@ -1880,20 +1927,20 @@ definitions:
         description: 常に'data'が設定されます
         type: string
         example: "data"
-        
 
 
-        
-#========================start MediaConnection section============================     
 
- 
-        
+
+#========================start MediaConnection section============================
+
+
+
 #GET /media_connections/ID/events
   MediaConnectionEventMessage:
     type: object
     required: [ "event" ]
     properties:
-      event: 
+      event:
         description: イベントの種別を示します
         type: string
         enum:
@@ -1906,17 +1953,17 @@ definitions:
         type: object
         required: [ "is_video", "call_id", "stream_id", "token"]
         properties:
-          is_video: 
+          is_video:
             type: boolean
             description: videoの場合にtrue, audioの場合false
           stream_params:
-            $ref: '#/definitions/MediaParameters'    
-      close_options: 
+            $ref: '#/definitions/MediaParameters'
+      close_options:
         type: object
-      error_message: 
+      error_message:
         description: エラーの内容を示します
-        type: string        
- 
+        type: string
+
  #PUT /media_connections/ID/redirect/ID
   MediaConnectionRedirectOptions:
     type: object
@@ -1932,7 +1979,7 @@ definitions:
     type: object
     required: [ "open", "metadata", "peers" ]
     properties:
-      open: 
+      open:
         description: MediaConnectionがアクティブなときtrueになります
         type: boolean
         example: true
@@ -1948,7 +1995,7 @@ definitions:
               description: Callを特定するためのIDです
               type: integer
               format: uint16
-              example: 61616161     
+              example: 61616161
             peer_id:
               description: 接続相手のPeerのpeer_idです
               type: string
@@ -1968,7 +2015,7 @@ definitions:
         type: boolean
         example: "BINARY_UTF8"
         description: データのフォーマットを指定します。現在はBINARY_UTF8のみです
-        
+
   DataSockParameters:
     type: object
     required: [ 'data_id', "port", "token" ]
@@ -1977,11 +2024,11 @@ definitions:
         description: Dataを特定するためのIDです
         type: integer
         format: uint64
-        example: 41414141   
+        example: 41414141
       token:
         type: string
         description: Dataを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "7f85805c-fc29-4b85-ba6d-a4018ba44d2d"          
+        example: "7f85805c-fc29-4b85-ba6d-a4018ba44d2d"
       port:
         description: Dataを待ち受けるポート番号です
         type: integer
@@ -2003,7 +2050,7 @@ definitions:
         description: Dataを特定するためのIDです
         type: integer
         format: uint64
-        example: 41414141   
+        example: 41414141
       token:
         type: string
         description: Dataを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
@@ -2013,23 +2060,23 @@ definitions:
         description: Dataの転送先IPv4アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
       redirect_ip_v6:
         type: string
-        description: Dataの転送先IPv6アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます        
+        description: Dataの転送先IPv6アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
       redirect_port:
         type: integer
         format: uint16
         example: 10001
-        
+
 #========================start Media section============================
 
   MediaOptions:
     type: object
-    required: [ 'is_video' ]    
+    required: [ 'is_video' ]
     properties:
       is_video:
         type: boolean
         example: true
         description: MediaがVideoかどうかを指定します。falseの場合はAudioとして扱われます
-        
+
   MediaParameters:
     type: object
     required: [ 'media_id', "token", "port" ]
@@ -2042,7 +2089,7 @@ definitions:
       token:
         type: string
         description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "06346afb-341f-41da-a432-4560f3cfc338"      
+        example: "06346afb-341f-41da-a432-4560f3cfc338"
       port:
         description: Mediaを待ち受けるポート番号です
         type: integer
@@ -2052,9 +2099,9 @@ definitions:
         description: Mediaを待ち受けるIPv4アドレスです
         type: string
       ip_v6:
-        description: Mediaを待ち受けるIPv6アドレスです      
+        description: Mediaを待ち受けるIPv6アドレスです
         type: string
-        
+
   MediaConnectionAnswerOptions:
     type: object
     required: [ 'accept', "constraints", "engine_params" ]
@@ -2066,8 +2113,8 @@ definitions:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       engine_params:
-        $ref: '#/definitions/EngineParameters'     
-          
+        $ref: '#/definitions/EngineParameters'
+
   MediaConnectionAnswerResponse:
     type: object
     required: [ "command_type", "params"]
@@ -2092,9 +2139,9 @@ definitions:
             description: Videoを受け取るJanusのポート番号を指定します
             type: integer
             format: uint16
-            example: 10021  
+            example: 10021
           audio_id:
             description: Audioを特定するためのIDです
             type: integer
             format: uint16
-            example: 82828282     
+            example: 82828282
