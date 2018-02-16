@@ -25,196 +25,12 @@ schemes:
   - http
 
 paths:
-  /engines/janus:
-    post:
-      tags:
-        - 0.engines
-      summary: WebRTCエンジンとしてJanusを利用します
-      description: WebRTCエンジンとしてJanusを利用するためにリソースの割当を行います。この際Pluginのロードも同時に行います
-      operationId: engines
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          name: body
-          description: Janusにアクセスするためのエンドポイントと利用するPluginを指定します。PluginはArrayで指定し、記載順にパイプライン化します。
-          required: true
-          schema:
-            $ref: '#/definitions/JanusOptions'
-      responses:
-        '201':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/EnginesResponse'
-        '400':
-          description: Invalid Input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "ENGINES_CREATE"
-              params:
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          enum:
-                          - "server"
-                          - "plugin"
-                          example: server
-                        message:
-                          type: string
-                          example: "Janus Server not found"
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout
-
-  /engines/janus/{engine_id}:
-    delete:
-      tags:
-        - 0.engines
-      summary: WebRTCエンジンの解放処理を行います
-      description: WebRTCエンジンとして割り当てたJanusのリソースを開放します。全てのWebRTCセッションとデータ受け渡しのためのUDPポートをクローズします
-      operationId: engines_delete
-      produces:
-        - application/json
-      parameters:
-        - name: engine_id
-          type: integer
-          format: uint64
-          in: path
-          description: Janus内に割り当てたリソースを特定するためのIDです
-          required: true
-        - name: token
-          type: string
-          in: query
-          description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Invalid input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "ENGINES_DELETE"
-              params:
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          enum:
-                          - "engine_id"
-                          - "token"
-                          example: engine_id
-                        message:
-                          type: string
-                          example: "engine_id field is not specified"
-        '403':
-          description: Forbidden(tokenが間違っている場合)
-        '404':
-          description: Not Found(engine_idが間違っている場合)
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout
-    patch:
-      tags:
-        - 0.engines
-      summary: WebRTCエンジンの解放処理を行います
-      description: PLUGIN動作変更のためのメッセージを通知します
-      operationId: engines_patch
-      produces:
-        - application/json
-      parameters:
-        - name: engine_id
-          type: integer
-          format: uint64
-          in: path
-          description: Janus内に割り当てたリソースを特定するためのIDです
-          required: true
-        - name: token
-          type: string
-          in: query
-          description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
-        - in: body
-          name: body
-          description: Pluginに送るメッセージを指定します
-          required: true
-          schema:
-            $ref: '#/definitions/PluginMessageObject'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/PluginMessageObject'
-        '400':
-          description: Invalid input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "ENGINES_PATCH"
-              params:
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          enum:
-                          - "engine_id"
-                          - "token"
-                          example: engine_id
-                        message:
-                          type: string
-                          example: "engine_id field is not specified"
-        '403':
-          description: Forbidden(tokenが間違っている場合)
-        '404':
-          description: Not Found(engine_idが間違っている場合)
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout
-
   /engines/libwebrtc:
     post:
       tags:
         - 0.engines
-      summary: WebRTCエンジンとしてJanusを利用します
-      description: WebRTCエンジンとしてJanusを利用するためにリソースの割当を行います。この際Pluginのロードも同時に行います
+      summary: WebRTCエンジンとしてlibWebRTCを利用します
+      description: WebRTCエンジンとしてlibWebRTCを利用するためにリソースの割当を行います。この際Pluginのロードも同時に行います
       operationId: libwebrtc
       consumes:
         - application/json
@@ -222,11 +38,11 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: body
-          description: Janusにアクセスするためのエンドポイントと利用するPluginを指定します
           required: true
+          name: body
+          description: libWebRTCにアクセスするためのエントリポイントを生成し利用するPluginを指定します
           schema:
-            $ref: '#/definitions/JanusOptions'
+            $ref: '#/definitions/LibWebRTCOptions'
       responses:
         '201':
           description: successful operation
@@ -257,7 +73,7 @@ paths:
                           example: server
                         message:
                           type: string
-                          example: "Janus Server not found"
+                          example: "libWebRTC Resource allocation failed"
         '405':
           description: Method Not Allowed
         '406':
@@ -279,12 +95,12 @@ paths:
           type: integer
           format: uint64
           in: path
-          description: Janus内に割り当てたリソースを特定するためのIDです
+          description: Native Client内に割り当てたlibWebRTCリソースを特定するためのIDです
           required: true
         - name: token
           type: string
           in: query
-          description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          description: libWebRTCのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '204':
@@ -338,12 +154,12 @@ paths:
           type: integer
           format: uint64
           in: path
-          description: Janus内に割り当てたリソースを特定するためのIDです
+          description: Native Client内に割り当てたリソースを特定するためのIDです
           required: true
         - name: token
           type: string
           in: query
-          description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+          description: libWebRTCのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
         - in: body
           name: body
@@ -1535,17 +1351,12 @@ paths:
 definitions:
 
 #POST /engines/janus
-  JanusOptions:
+  LibWebRTCOptions:
     type: object
-    required: [ "server", "plugins" ]
+    required: [ "plugins" ]
     properties:
-      server:
-        description: Janusにアクセスするためのエンドポイントを指定します
-        type: string
-        example: "http://127.0.0.1:8088/janus"
-        format: string
       plugins:
-        description: Janusで利用するプラグインを指定します
+        description: Native Clientで利用するプラグインを指定します
         type: array
         items:
           type: string
@@ -1570,11 +1381,11 @@ definitions:
         type: integer
         format: uint64
         example: 525099922
-        description: Janus内に割り当てたリソースを特定するためのIDです
+        description: Native Client内に割り当てたリソースを特定するためのIDです
       token:
         type: string
         example: "9cf6b7d2-6220-49d5-bfea-387454fe23f0"
-        description: Janusのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+        description: libWebRTCのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
 
 #PATCH /engines
 
@@ -1967,12 +1778,31 @@ definitions:
  #PUT /media_connections/ID/redirect/ID
   MediaConnectionRedirectOptions:
     type: object
-    required: [ "redirect_port" ]
     properties:
-      redirect_port:
-        type: integer
-        format: uint16
-        example: 10001
+      video:
+        properties:
+          redirect_ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
+          redirect_ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
+          redirect_port:
+            type: integer
+            format: uint16
+            example: 10001
+      audio:
+        properties:
+          redirect_ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
+          redirect_ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
+          redirect_port:
+            type: integer
+            format: uint16
+            example: 10001
 
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
@@ -2126,7 +1956,7 @@ definitions:
         type: object
         properties:
           video_port:
-            description: Videoを受け取るJanusのポート番号を指定します
+            description: Videoを受け取るNative Clientのポート番号を指定します
             type: integer
             format: uint16
             example: 10011
@@ -2136,7 +1966,7 @@ definitions:
             format: uint16
             example: 72727272
           audio_port:
-            description: Videoを受け取るJanusのポート番号を指定します
+            description: Videoを受け取るNative Clientのポート番号を指定します
             type: integer
             format: uint16
             example: 10021
