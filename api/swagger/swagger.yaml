@@ -517,15 +517,9 @@ paths:
         - application/json
       parameters:
         - name: data_id
-          type: integer
-          format: uint64
+          type: string
           in: path
           description: Dataを特定するためのIDを指定します
-          required: true
-        - name: token
-          type: string
-          in: query
-          description: Dataを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '204':
@@ -554,7 +548,7 @@ paths:
                           type: string
                           example: "peer_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(data_connection_idが間違っている場合)
         '405':
@@ -611,7 +605,7 @@ paths:
                           type: string
                           example: "peer_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(peer_idが間違っている場合)
         '405':
@@ -637,13 +631,7 @@ paths:
           in: "path"
           description: DataConnectionを特定するためのidを指定します
           required: true
-          type: "integer"
-          format: "uint64"
-        - name: token
-          type: string
-          in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
+          type: "string"
       responses:
         '204':
           description: No Content
@@ -671,7 +659,7 @@ paths:
                           type: string
                           example: "peer_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(data_idが間違っている場合)
         '405':
@@ -700,11 +688,6 @@ paths:
           required: true
           type: "integer"
           format: "uint64"
-        - name: token
-          type: string
-          in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
         - in: body
           name: body
           description: 転送するDataとDataの転送先情報を指定します
@@ -738,7 +721,7 @@ paths:
                           type: string
                           example: "data_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(data_connection_idが間違っている場合)
         '405':
@@ -762,13 +745,7 @@ paths:
           in: "path"
           description: "DataConnectionを特定するためのidを指定します"
           required: true
-          type: "integer"
-          format: "uint64"
-        - name: token
-          type: string
-          in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
+          type: "string"
       responses:
         '200':
           description: successful operation
@@ -796,7 +773,7 @@ paths:
                         message:
                           type: string
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(data_connection_idが間違っている場合)
         '405':
@@ -822,11 +799,6 @@ paths:
           required: true
           type: "string"
           format: "string"
-        - name: token
-          type: string
-          in: query
-          description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
       responses:
         '200':
           description: successful operation
@@ -854,7 +826,7 @@ paths:
                         message:
                           type: string
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(data_connection_idが間違っている場合)
         '405':
@@ -931,15 +903,9 @@ paths:
         - application/json
       parameters:
         - name: media_id
-          type: integer
-          format: uint64
+          type: string
           in: path
           description: Mediaを特定するためのIDを指定します
-          required: true
-        - name: token
-          type: string
-          in: query
-          description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
           required: true
       responses:
         '204':
@@ -968,7 +934,7 @@ paths:
                           type: string
                           example: "media_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(media_idが間違っている場合)
         '405':
@@ -1051,13 +1017,7 @@ paths:
           in: "path"
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
-          type: "integer"
-          format: "uint64"
-        - name: token
-          type: string
-          in: query
-          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
+          type: "string"
       responses:
         '204':
           description: No Content
@@ -1085,7 +1045,7 @@ paths:
                           type: string
                           example: "media_connection_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(media_connection_idが間違っている場合)
         '405':
@@ -1111,13 +1071,7 @@ paths:
           in: "path"
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
-          type: "integer"
-          format: "uint64"
-        - name: token
-          type: string
-          in: query
-          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
+          type: "string"
         - in: body
           name: body
           description: 相手側のPeerへ送信するMediaの情報を指定します
@@ -1153,7 +1107,7 @@ paths:
                           type: string
                           example: "media_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(media_connection_idが間違っている場合)
         '405':
@@ -1179,13 +1133,7 @@ paths:
           in: "path"
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
-          type: "integer"
-          format: "uint64"
-        - name: token
-          type: string
-          in: query
-          description: MediaStream利用に必要なワンタイムトークン
-          required: true
+          type: "string"
         - in: body
           name: body
           description: SkyWayサーバへアクセスするための情報
@@ -1219,7 +1167,7 @@ paths:
                           type: string
                           example: "media_id field is not specified"
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(media_connection_idが間違っている場合)
         '405':
@@ -1243,13 +1191,7 @@ paths:
           in: "path"
           description: "MediaConnectionを特定するためのidを指定します"
           required: true
-          type: "integer"
-          format: "uint64"
-        - name: token
-          type: string
-          in: query
-          description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
+          type: "string"
       responses:
         '200':
           description: successful operation
@@ -1277,7 +1219,7 @@ paths:
                         message:
                           type: string
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(media_connection_idが間違っている場合)
         '405':
@@ -1303,11 +1245,6 @@ paths:
           required: true
           type: "string"
           format: "string"
-        - name: token
-          type: string
-          in: query
-          description: MediaConnection利用に必要なワンタイムトークン
-          required: true
       responses:
         '200':
           description: successful operation
@@ -1335,7 +1272,7 @@ paths:
                         message:
                           type: string
         '403':
-          description: Forbidden(tokenが間違っている場合)
+          description: Forbidden(不正な操作を行った場合)
         '404':
           description: Not Found(media_connection_idが間違っている場合)
         '405':
@@ -1449,7 +1386,7 @@ definitions:
             description: 他のピアがこのピアへ接続するときに使われるIDです。Peerオブジェクトの特定にも利用します
           token:
             type: string
-            example: "9749250e-d157-4f80-9ee2-359ce8524308"
+            example: "pt-9749250e-d157-4f80-9ee2-359ce8524308"
             description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
 
 #POST /peers/ID/media_connections
@@ -1507,14 +1444,9 @@ definitions:
         type: object
         properties:
           media_connection_id:
-            type: integer
-            format: uint64
-            example: 56565656
-            description: MediaConnectionを特定するためのIDです
-          token:
             type: string
-            example:  "5951284d-5ac7-436e\n\t\t\t\t\t-aafa-e2a9a0a28d63"
-            description: MediaConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+            example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
+            description: MediaConnectionを特定するためのIDです
 
 #POST /peers/ID/data_connections
 
@@ -1583,14 +1515,9 @@ definitions:
         required: [ "data_connection_id", "data_port" ]
         properties:
           data_connection_id:
-            type: integer
-            format: uint64
-            example: 9292929292
-            description: DataConnectionを特定するためのIDです
-          token:
-            description: DataConnectionを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
             type: string
-            example: "9749250e-d157-4f80-9ee2-359ce8524308"
+            example: "dc-4995f372-fb6a-4196-b30a-ce11e5c7f56c"
+            description: DataConnectionを特定するためのIDです
 
 
 #GET /peers/ID/events
@@ -1628,16 +1555,12 @@ definitions:
 
   PeerParametsers:
     type: object
-    required: [ "peer_id", "token" ]
+    required: [ "peer_id" ]
     properties:
       peer_id:
         description: Peerを特定するためのIDです
         type: string
         example: "hoge"
-      token:
-        type: string
-        description: Call利用に必要なワンタイムトークン
-        example: "2326d265-1fcb-413f-a7d5-1b1e87b52abc"
 
   CallParametsers:
     description: callイベントのときのみ含まれます
@@ -1647,7 +1570,7 @@ definitions:
       media_connection_id:
         description: 相手側からのCallに応答するのに必要なIDです
         type: string
-        example: "hoge"
+        example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
 
 #GET /peers/ID/status
   PeerStatusMessage:
@@ -1664,7 +1587,7 @@ definitions:
 
   PeerVideoParameters:
     type: object
-    required: [ 'band_width', 'codec', 'media_id', "token" ]
+    required: [ 'band_width', 'codec', 'media_id' ]
     properties:
       band_width:
         type: integer
@@ -1673,17 +1596,12 @@ definitions:
         example: "H264"
       media_id:
         description: Mediaを特定するためのIDです
-        type: integer
-        format: uint16
-        example: 51515151
-      token:
         type: string
-        description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "video_06346afb-341f-41da-a432-4560f3cfc338"
+        example: "vi-61769866-f16b-470c-9e8a-e1f8afc87096"
 
   PeerAudioParameters:
     type: object
-    required: [ 'band_width', 'codec', 'media_id', "token" ]
+    required: [ 'band_width', 'codec', 'media_id' ]
     properties:
       band_width:
         type: integer
@@ -1692,13 +1610,8 @@ definitions:
         example: "opus"
       media_id:
         description: Mediaを特定するためのIDです
-        type: integer
-        format: uint16
-        example: 51515151
-      token:
         type: string
-        description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "audio_b69abbaf-a8a1-46f9-8acc-d4575f0a5e33"
+        example: "au-8f8e8955-460e-4f3a-9440-1c851af328b5"
 
 #========================start DataConnection section============================
 
@@ -1783,7 +1696,7 @@ definitions:
       stream_options:
         description: streamの内容を示します。streamイベントの場合のみ
         type: object
-        required: [ "is_video", "call_id", "stream_id", "token"]
+        required: [ "is_video", "media_connection_id", "stream_id" ]
         properties:
           is_video:
             type: boolean
@@ -1842,11 +1755,10 @@ definitions:
         items:
           type: object
           properties:
-            call_id:
-              description: Callを特定するためのIDです
-              type: integer
-              format: uint16
-              example: 61616161
+            media_connection_id:
+              description: MediaConnectionを特定するためのIDです
+              type: string
+              example: "mc-e6b40946-0f92-4de9-ad43-d1e27420c57a"
             peer_id:
               description: 接続相手のPeerのpeer_idです
               type: string
@@ -1869,17 +1781,12 @@ definitions:
 
   DataSockParameters:
     type: object
-    required: [ 'data_id', "port", "token" ]
+    required: [ 'data_id', "port" ]
     properties:
       data_id:
         description: Dataを特定するためのIDです
-        type: integer
-        format: uint64
-        example: 41414141
-      token:
         type: string
-        description: Dataを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "7f85805c-fc29-4b85-ba6d-a4018ba44d2d"
+        example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
       port:
         description: Dataを待ち受けるポート番号です
         type: integer
@@ -1895,17 +1802,12 @@ definitions:
  #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
     type: object
-    required: [ 'data_id', "token", "redirect_port" ]
+    required: [ 'data_connection_id', "redirect_port" ]
     properties:
-      data_id:
-        description: Dataを特定するためのIDです
-        type: integer
-        format: uint64
-        example: 41414141
-      token:
+      data_connection_id:
+        description: DataConnectionを特定するためのIDです
         type: string
-        description: Dataを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "7f85805c-fc29-4b85-ba6d-a4018ba44d2d"
+        example: "dc-50a32bab-b3d9-4913-8e20-f79c90a6a211"
       redirect_ip_v4:
         type: string
         description: Dataの転送先IPv4アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
@@ -1930,17 +1832,12 @@ definitions:
 
   MediaParameters:
     type: object
-    required: [ 'media_id', "token", "port" ]
+    required: [ 'media_id', "port" ]
     properties:
       media_id:
         description: Mediaを特定するためのIDです
-        type: integer
-        format: uint16
-        example: 51515151
-      token:
         type: string
-        description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "06346afb-341f-41da-a432-4560f3cfc338"
+        example: "vi-4d053831-5dc2-461b-a358-d062d6115216"
       port:
         description: Mediaを待ち受けるポート番号です
         type: integer
@@ -1983,16 +1880,14 @@ definitions:
             example: 10011
           video_id:
             description: Videoを特定するためのIDです
-            type: integer
-            format: uint16
-            example: 72727272
+            type: string
+            example: "vi-a32e5933-828b-44e4-849d-0826ced78807"
           audio_port:
-            description: Videoを受け取るNative Clientのポート番号を指定します
+            description: Audioを受け取るNative Clientのポート番号を指定します
             type: integer
             format: uint16
             example: 10021
           audio_id:
             description: Audioを特定するためのIDです
-            type: integer
-            format: uint16
-            example: 82828282
+            type: string
+            example: "au-e673037c-6ce8-48cb-9834-ba4ed5026a83"
