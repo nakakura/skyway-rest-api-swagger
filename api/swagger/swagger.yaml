@@ -1634,7 +1634,7 @@ definitions:
 
   CallParametsers:
     type: object
-    required: [ "call_id", "token" ]
+    required: [ "peer_id", "token" ]
     properties:
       peer_id:
         description: Peerオブジェクトを特定するためのIDです
@@ -1756,7 +1756,7 @@ definitions:
       stream_options:
         description: streamの内容を示します。streamイベントの場合のみ
         type: object
-        required: [ "is_video", "call_id", "stream_id", "token"]
+        required: [ "is_video", "peer_id", "stream_id", "token"]
         properties:
           is_video:
             type: boolean
@@ -1815,11 +1815,6 @@ definitions:
         items:
           type: object
           properties:
-            call_id:
-              description: Callを特定するためのIDです
-              type: integer
-              format: uint16
-              example: 61616161
             peer_id:
               description: 接続相手のPeerのpeer_idです
               type: string
