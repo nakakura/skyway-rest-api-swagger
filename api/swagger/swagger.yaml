@@ -1479,30 +1479,22 @@ definitions:
     properties:
       metadata:
         type: string
-      video_band_width:
-        type: integer
-      audio_band_width:
-        type: integer
-      video_codec:
-        type: string
-      audio_codec:
-        type: string
-      videoReceiveEnabled:
-        type: boolean
-      audioReceiveEnabled:
-        type: boolean
       video:
         description: Videoを転送するかどうか指定します
         type: boolean
         example: true
-      video_params:
-        $ref: '#/definitions/PeerMediaParameters'
+      videoReceiveEnabled:
+        type: boolean
       audio:
         description: Audioを転送するかどうか指定します
         type: boolean
         example: true
+      audioReceiveEnabled:
+        type: boolean
+      video_params:
+        $ref: '#/definitions/PeerVideoParameters'
       audio_params:
-        $ref: '#/definitions/PeerMediaParameters'
+        $ref: '#/definitions/PeerAudioParameters'
 
   PeerCallResponse:
     type: object
@@ -1616,14 +1608,10 @@ definitions:
         - "close"
         - "error"
         example: "TYPE_OF_EVENT"
-      open_params:
-        type: object
-      connection_params:
-        type: object
+      peer_params:
+        $ref: '#/definitions/PeerParametsers'
       call_params:
         $ref: '#/definitions/CallParametsers'
-      close_params:
-        type: object
       error_message:
         description: エラーの内容を示します
         type: string
@@ -1638,19 +1626,28 @@ definitions:
         - "socket-error"
         - "socket-closed"
 
-  CallParametsers:
+  PeerParametsers:
     type: object
-    required: [ "call_id", "token" ]
+    required: [ "peer_id", "token" ]
     properties:
-      call_id:
-        description: Callを特定するためのIDです
-        type: integer
-        format: uint16
-        example: 61616161
+      peer_id:
+        description: Peerを特定するためのIDです
+        type: string
+        example: "hoge"
       token:
         type: string
         description: Call利用に必要なワンタイムトークン
         example: "2326d265-1fcb-413f-a7d5-1b1e87b52abc"
+
+  CallParametsers:
+    description: callイベントのときのみ含まれます
+    type: object
+    required: [ "media_connection_id" ]
+    properties:
+      media_connection_id:
+        description: 相手側からのCallに応答するのに必要なIDです
+        type: string
+        example: "hoge"
 
 #GET /peers/ID/status
   PeerStatusMessage:
@@ -1665,10 +1662,15 @@ definitions:
         type: boolean
         example: false
 
-  PeerMediaParameters:
+  PeerVideoParameters:
     type: object
-    required: [ 'media_id', "token" ]
+    required: [ 'band_width', 'codec', 'media_id', "token" ]
     properties:
+      band_width:
+        type: integer
+      codec:
+        type: string
+        example: "H264"
       media_id:
         description: Mediaを特定するためのIDです
         type: integer
@@ -1677,7 +1679,26 @@ definitions:
       token:
         type: string
         description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-        example: "06346afb-341f-41da-a432-4560f3cfc338"
+        example: "video_06346afb-341f-41da-a432-4560f3cfc338"
+
+  PeerAudioParameters:
+    type: object
+    required: [ 'band_width', 'codec', 'media_id', "token" ]
+    properties:
+      band_width:
+        type: integer
+      codec:
+        type: string
+        example: "opus"
+      media_id:
+        description: Mediaを特定するためのIDです
+        type: integer
+        format: uint16
+        example: 51515151
+      token:
+        type: string
+        description: Mediaを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
+        example: "audio_b69abbaf-a8a1-46f9-8acc-d4575f0a5e33"
 
 #========================start DataConnection section============================
 
