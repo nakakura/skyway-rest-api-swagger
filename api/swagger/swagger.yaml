@@ -1616,14 +1616,8 @@ definitions:
         - "close"
         - "error"
         example: "TYPE_OF_EVENT"
-      open_params:
-        type: object
-      connection_params:
-        type: object
-      call_params:
+      params:
         $ref: '#/definitions/CallParametsers'
-      close_params:
-        type: object
       error_message:
         description: エラーの内容を示します
         type: string
@@ -1642,11 +1636,11 @@ definitions:
     type: object
     required: [ "call_id", "token" ]
     properties:
-      call_id:
-        description: Callを特定するためのIDです
-        type: integer
+      peer_id:
+        description: Peerオブジェクトを特定するためのIDです
+        type: string
         format: uint16
-        example: 61616161
+        example: "ID_FOO"
       token:
         type: string
         description: Call利用に必要なワンタイムトークン
