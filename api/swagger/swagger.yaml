@@ -1807,14 +1807,14 @@ definitions:
  #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
     type: object
-    required: [ "redirect_port" ]
+    required: [ "port" ]
     properties:
       ip_v4:
         type: string
-        description: Dataの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
+        description: Dataの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
       ip_v6:
         type: string
-        description: Dataの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
+        description: Dataの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
       port:
         type: integer
         format: uint16
