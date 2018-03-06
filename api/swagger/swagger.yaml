@@ -1537,6 +1537,8 @@ definitions:
         $ref: '#/definitions/PeerParametsers'
       call_params:
         $ref: '#/definitions/CallParametsers'
+      data_params:
+        $ref: '#/definitions/DataParametsers'
       error_message:
         description: エラーの内容を示します
         type: string
@@ -1561,7 +1563,7 @@ definitions:
         example: "hoge"
 
   CallParametsers:
-    description: callイベントのときのみ含まれます
+    description: OnMediaConnectionイベントのときのみ含まれます
     type: object
     required: [ "media_connection_id" ]
     properties:
@@ -1569,6 +1571,17 @@ definitions:
         description: 相手側からのCallに応答するのに必要なIDです
         type: string
         example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
+
+  DataParametsers:
+    description: OnDataConnectionイベントのときのみ含まれます
+    type: object
+    required: [ "data_connection_id" ]
+    properties:
+      data_connection_id:
+        description: 相手側からのConnectに応答するのに必要なIDです
+        type: string
+        example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
+
 
 #GET /peers/ID/status
   PeerStatusMessage:
