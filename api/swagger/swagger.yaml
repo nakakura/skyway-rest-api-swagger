@@ -1531,6 +1531,7 @@ definitions:
         - "open"
         - "connection"
         - "call"
+        - "stream"
         - "close"
         - "error"
         example: "TYPE_OF_EVENT"
@@ -1569,7 +1570,7 @@ definitions:
         example: "pt-870c2c49-c16d-4c69-b1ad-fec7550564af"
 
   CallParametsers:
-    description: OnMediaConnectionイベントのときのみ含まれます
+    description: call及びstreamイベントのときのみ含まれます
     type: object
     required: [ "media_connection_id" ]
     properties:
