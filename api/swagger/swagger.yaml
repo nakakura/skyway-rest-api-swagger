@@ -1395,7 +1395,7 @@ definitions:
     required: [ "peer_id", "token", "target_id", "constraints", "engine_params" ]
     properties:
       peer_id:
-        description: "接続対象のPeerのidを指定します"
+        description: "自身のPeerのidを指定します"
         type: "string"
         format: "string"
       token:
