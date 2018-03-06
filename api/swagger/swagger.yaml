@@ -1556,12 +1556,17 @@ definitions:
 
   PeerParametsers:
     type: object
+    description: openイベントのときのみ含まれます
     required: [ "peer_id" ]
     properties:
       peer_id:
         description: Peerを特定するためのIDです
         type: string
         example: "hoge"
+      token:
+        description: Peerを利用するために必要なtokenです。
+        type: string
+        example: "pt-870c2c49-c16d-4c69-b1ad-fec7550564af"
 
   CallParametsers:
     description: OnMediaConnectionイベントのときのみ含まれます
