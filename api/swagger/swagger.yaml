@@ -1117,66 +1117,6 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/connections/{media_connection_id}/redirect:
-    post:
-      tags:
-        - 3.media
-      summary: MediaConnectionで受信したMediaのリダイレクト先を指定
-      description: Mediaのリダイレクト先のIPアドレスとポート番号を指定
-      operationId: media_redirect
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - name: "media_connection_id"
-          in: "path"
-          description: "MediaConnectionを特定するためのidを指定します"
-          required: true
-          type: "string"
-        - in: body
-          name: body
-          description: SkyWayサーバへアクセスするための情報
-          required: true
-          schema:
-            $ref: '#/definitions/MediaConnectionRedirectOptions'
-      responses:
-        '200':
-          description: successful operation
-        '400':
-          description: Invalid input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "MEDIA_CONNECTION_REDIRECT"
-              params:
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          example: media_id
-                        message:
-                          type: string
-                          example: "media_id field is not specified"
-        '403':
-          description: Forbidden(不正な操作を行った場合)
-        '404':
-          description: Not Found(media_connection_idが間違っている場合)
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout
-
   /media/connections/{media_connection_id}/events:
     get:
       tags:
@@ -1218,6 +1158,66 @@ paths:
                           type: string
                         message:
                           type: string
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/connections/{media_connection_id}/redirect:
+    post:
+      tags:
+        - 3.media
+      summary: MediaConnectionで受信したMediaのリダイレクト先を指定
+      description: Mediaのリダイレクト先のIPアドレスとポート番号を指定
+      operationId: media_redirect
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのidを指定します"
+          required: true
+          type: "string"
+        - in: body
+          name: body
+          description: SkyWayサーバへアクセスするための情報
+          required: true
+          schema:
+            $ref: '#/definitions/MediaRedirectOptions'
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_REDIRECT"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: media_id
+                        message:
+                          type: string
+                          example: "media_id field is not specified"
         '403':
           description: Forbidden(不正な操作を行った場合)
         '404':
@@ -1364,10 +1364,6 @@ definitions:
         type: boolean
         example: true
         description: SkyWayのTURNサーバを利用する場合はtrueにします。デフォルトはtrueです。
-      debug:
-        description: debugレベルにしたがってログを出力します。デフォルト値は0です。<br/>0ログを出力しません。<br/> 1エラーのみログ出力します。<br/> 2エラーと警告をログ出力します。<br/> 3すべてのログを出力します。
-        type: integer
-        enum: [0, 1, 2, 3]
 
   PeerResponse:
     type: object
@@ -1409,6 +1405,8 @@ definitions:
         $ref: '#/definitions/PeerCallConstraints'
       engine_params:
         $ref: '#/definitions/EngineParameters'
+      redirect_params:
+        $ref: '#/definitions/MediaRedirectOptions'
 
   PeerCallConstraints:
     type: object
@@ -1710,33 +1708,20 @@ definitions:
         type: string
 
  #PUT /media_connections/ID/redirect/ID
-  MediaConnectionRedirectOptions:
+  MediaRedirectOptions:
     type: object
+    required: [ "port" ]
     properties:
-      video:
-        properties:
-          redirect_ip_v4:
-            type: string
-            description: Mediaの転送先IPv4アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
-          redirect_ip_v6:
-            type: string
-            description: Mediaの転送先IPv6アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
-          redirect_port:
-            type: integer
-            format: uint16
-            example: 10001
-      audio:
-        properties:
-          redirect_ip_v4:
-            type: string
-            description: Mediaの転送先IPv4アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
-          redirect_ip_v6:
-            type: string
-            description: Mediaの転送先IPv6アドレスを指定します。redirect_ip_v4またはredirect_ip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はredirect_ip_v4が優先されます
-          redirect_port:
-            type: integer
-            format: uint16
-            example: 10001
+      ip_v4:
+        type: string
+        description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+      ip_v6:
+        type: string
+        description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+      port:
+        type: integer
+        format: uint16
+        example: 10001
 
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
@@ -1862,6 +1847,8 @@ definitions:
         $ref: '#/definitions/PeerCallConstraints'
       engine_params:
         $ref: '#/definitions/EngineParameters'
+      redirect_params:
+        $ref: '#/definitions/MediaRedirectOptions'
 
   MediaConnectionAnswerResponse:
     type: object
