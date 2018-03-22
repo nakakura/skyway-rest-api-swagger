@@ -693,7 +693,7 @@ paths:
           description: 転送するDataとDataの転送先情報を指定します
           required: true
           schema:
-            $ref: '#/definitions/DataConnectionRedirectOptions'
+            $ref: '#/definitions/DataConnectionAnswerOptions'
       responses:
         '204':
           description: successful operation
@@ -1829,6 +1829,19 @@ definitions:
       ip_v6:
         description: Dataを待ち受けるIPv6アドレスです
         type: string
+
+  DataConnectionAnswerOptions:
+    type: object
+    properties:
+      params:
+        type: object
+        properties:
+          data_id:
+            description: Dataを特定するためのIDです
+            type: string
+            example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
+      redirect_params:
+        $ref: '#/definitions/DataConnectionRedirectOptions'
 
  #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
