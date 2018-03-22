@@ -1478,7 +1478,11 @@ definitions:
         example: ID_BAR
         description: 接続対象のpeer_idを指定します
       params:
-        $ref: '#/definitions/DataSockParameters'
+        type: object
+        properties:
+          data_id:
+            type: string
+            example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
       engine_params:
         $ref: '#/definitions/EngineParameters'
       redirect_params:
