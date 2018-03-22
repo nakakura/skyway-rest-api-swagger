@@ -1290,7 +1290,6 @@ definitions:
 #POST /engines/janus
   LibWebRTCOptions:
     type: object
-    required: [ "plugins" ]
     properties:
       plugins:
         description: Native Clientで利用するプラグインを指定します
