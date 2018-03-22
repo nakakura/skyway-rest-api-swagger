@@ -1619,6 +1619,10 @@ definitions:
         description: Mediaを特定するためのIDです
         type: string
         example: "vi-61769866-f16b-470c-9e8a-e1f8afc87096"
+      payload_type:
+        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
+        type: integer
+        example: 100
 
   PeerAudioParameters:
     type: object
@@ -1633,6 +1637,10 @@ definitions:
         description: Mediaを特定するためのIDです
         type: string
         example: "au-8f8e8955-460e-4f3a-9440-1c851af328b5"
+      payload_type:
+        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
+        type: integer
+        example: 111
 
 #========================start DataConnection section============================
 
