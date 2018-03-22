@@ -1795,7 +1795,7 @@ definitions:
     type: object
     properties:
       serialization:
-        type: boolean
+        type: string
         example: "BINARY_UTF8"
         description: データのフォーマットを指定します。現在はBINARY_UTF8のみです
 
