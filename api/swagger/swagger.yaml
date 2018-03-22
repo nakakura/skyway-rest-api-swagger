@@ -1868,12 +1868,8 @@ definitions:
 
   MediaConnectionAnswerOptions:
     type: object
-    required: [ 'accept', "constraints", "engine_params" ]
+    required: [ "constraints", "engine_params" ]
     properties:
-      accept:
-        type: boolean
-        description: Callを開始するかどうか指定します
-        example: true
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       engine_params:
