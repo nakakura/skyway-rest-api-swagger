@@ -1863,8 +1863,6 @@ definitions:
         $ref: '#/definitions/PeerCallConstraints'
       engine_params:
         $ref: '#/definitions/EngineParameters'
-      redirect_params:
-        $ref: '#/definitions/MediaRedirectOptions'
 
   MediaConnectionAnswerResponse:
     type: object
