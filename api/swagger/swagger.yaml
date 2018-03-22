@@ -695,7 +695,7 @@ paths:
           schema:
             $ref: '#/definitions/DataConnectionRedirectOptions'
       responses:
-        '200':
+        '204':
           description: successful operation
         '400':
           description: Invalid input
@@ -1193,7 +1193,7 @@ paths:
           schema:
             $ref: '#/definitions/MediaRedirectOptions'
       responses:
-        '200':
+        '204':
           description: successful operation
         '400':
           description: Invalid input
