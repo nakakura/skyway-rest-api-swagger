@@ -1768,7 +1768,7 @@ definitions:
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
     type: object
-    required: [ "open", "metadata", "peers" ]
+    required: [ "open", "metadata", "remote_id" ]
     properties:
       open:
         description: MediaConnectionがアクティブなときtrueになります
