@@ -1670,11 +1670,7 @@ definitions:
     type: object
     required: [ "buffersize", "label", "metadata", "open", "reliable", "seliarization", "type" ]
     properties:
-      peer_connection:
-        description: コネクションに関連付けされる、RTCPeerConnectionへの参照です。peer_idを出力します
-        type: integer
-        format: uint64
-      peer:
+      remote_id:
         description: コネクションの相手側のpeer_idです
         type: string
         example: "ID_BAR"
