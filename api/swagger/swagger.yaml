@@ -1777,23 +1777,9 @@ definitions:
       metadata:
         description: コネクションが開始されたときに、コネクションと関連付けされるメタデータです。
         type: object
-      peers:
-        type: array
-        items:
-          type: object
-          properties:
-            media_connection_id:
-              description: MediaConnectionを特定するためのIDです
-              type: string
-              example: "mc-e6b40946-0f92-4de9-ad43-d1e27420c57a"
-            peer_id:
-              description: 接続相手のPeerのpeer_idです
-              type: string
-              example: "ID_BAR"
-            type:
-              description: 常に'media'です
-              type: string
-              example: 'media'
+      remote_id:
+        type: string
+        description: 接続相手のPeerのpeer_idです
 
 
 #========================start Data section============================
