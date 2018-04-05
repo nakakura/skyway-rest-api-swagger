@@ -1781,7 +1781,6 @@ definitions:
         type: string
         description: 接続相手のPeerのpeer_idです
 
-
 #========================start Data section============================
 
   DataSockOptions:
