@@ -1668,7 +1668,7 @@ definitions:
 #GET /data_connection/ID/status
   DataConnectionStatusMessage:
     type: object
-    required: [ "buffersize", "label", "metadata", "open", "reliable", "seliarization", "type" ]
+    required: [ "buffersize", "label", "metadata", "open", "reliable", "serialization", "type" ]
     properties:
       remote_id:
         description: コネクションの相手側のpeer_idです
@@ -1689,7 +1689,7 @@ definitions:
       reliable:
         description: 信頼性のあるdata channelの場合にtrueです。コネクションの開始時に定義されます。
         type: boolean
-      seliarization:
+      serialization:
         description: コネクションを通じて送信されるデータのserializeフォーマットです。binary (デフォルト値)、 binary-utf8、 json、 または none となります。
         type: string
         example: "binary-utf8"
