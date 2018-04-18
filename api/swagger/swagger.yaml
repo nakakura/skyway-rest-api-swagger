@@ -481,15 +481,12 @@ paths:
           description: Not Acceptable
         '408':
           description: Request Timeout
-
-
-  /data/connections/{data_connection_id}/redirect:
-    post:
+    put:
       tags:
         - 2.data
-      summary: DataConnectionで受信したDataのリダイレクト先を指定
-      description: Dataのリダイレクト先のIPアドレスとポート番号を指定
-      operationId: connection_redirect
+      summary: DataConnectionの動作を変更します
+      description: DataConnectionで相手側から受信したデータの転送先指定と、DataConnectionに与えるデータの指定/変更を行います。
+      operationId: data_connection_put
       consumes:
         - application/json
       produces:
@@ -497,19 +494,18 @@ paths:
       parameters:
         - name: "data_connection_id"
           in: "path"
-          description: "DataConnectionを特定するためのidを指定します"
+          description: DataConnectionを特定するためのidを指定します
           required: true
-          type: "integer"
-          format: "uint64"
+          type: "string"
         - in: body
           name: body
-          description: 転送するDataとDataの転送先情報を指定します
+          description: 受信したDataの転送先と、相手側へ送信するDataのIDを指定します
           required: true
           schema:
-            $ref: '#/definitions/DataConnectionAnswerOptions'
+            $ref: '#/definitions/DataConnectionPutOptions'
       responses:
         '204':
-          description: successful operation
+          description: No Content
         '400':
           description: Invalid input
           schema:
@@ -517,7 +513,7 @@ paths:
             properties:
               command_type:
                 type: string
-                example: "DATA_CONNECTION_REDIRECT"
+                example: "DATA_CONNECTION_DELETE"
               params:
                 type: object
                 required: [ "errors" ]
@@ -529,14 +525,14 @@ paths:
                       properties:
                         field:
                           type: string
-                          example: data_id
+                          example: peer_id
                         message:
                           type: string
-                          example: "data_id field is not specified"
+                          example: "peer_id field is not specified"
         '403':
           description: Forbidden(不正な操作を行った場合)
         '404':
-          description: Not Found(data_connection_idが間違っている場合)
+          description: Not Found(data_idが間違っている場合)
         '405':
           description: Method Not Allowed
         '406':
@@ -1568,7 +1564,15 @@ definitions:
         description: Dataを待ち受けるIPv6アドレスです
         type: string
 
-  DataConnectionAnswerOptions:
+  DataConnectionPutOptions:
+    type: object
+    properties:
+      feed_params:
+        $ref: '#/definitions/DataConnectionFeedOptions'
+      redirect_params:
+        $ref: '#/definitions/DataConnectionRedirectOptions'
+
+  DataConnectionFeedOptions:
     type: object
     properties:
       params:
@@ -1578,14 +1582,16 @@ definitions:
             description: Dataを特定するためのIDです
             type: string
             example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
-      redirect_params:
-        $ref: '#/definitions/DataConnectionRedirectOptions'
 
  #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
     type: object
     required: [ "port" ]
     properties:
+      data_id:
+        description: Dataを特定するためのIDです
+        type: string
+        example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
       ip_v4:
         type: string
         description: Dataの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
