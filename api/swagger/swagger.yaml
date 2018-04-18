@@ -1224,7 +1224,7 @@ definitions:
           serialization:
             type: string
             format: "string"
-            description: 送信時のシリアライズ方法を指定します。'binary', 'json', 'none'のいずれかが選択可能です
+            description: 送信時のシリアライズ方法を指定します。'BINARY', 'JSON', 'NONE'のいずれかが選択可能です
           dcInit:
             $ref: '#/definitions/DcInit'
       target_id:
@@ -1284,12 +1284,12 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "open"
-        - "connection"
-        - "call"
-        - "stream"
-        - "close"
-        - "error"
+        - "OPEN"
+        - "CONNECTION"
+        - "CALL"
+        - "STREAM"
+        - "CLOSE"
+        - "ERROR"
         example: "TYPE_OF_EVENT"
       peer_params:
         $ref: '#/definitions/PeerParametsers'
@@ -1301,15 +1301,15 @@ definitions:
         description: エラーの内容を示します
         type: string
         enum:
-        - "browser-incompatible"
-        - "invalid-id"
-        - "invalid-key"
-        - "unavailable-id"
-        - "ssl-unavailable"
-        - "server-disconnected"
-        - "server-error"
-        - "socket-error"
-        - "socket-closed"
+        - "BROWSER_INCOMPATIBLE"
+        - "INVALID_ID"
+        - "INVALID_KEY"
+        - "UNAVAILABLE_ID"
+        - "SSL_UNAVAILABLE"
+        - "SERVER_DISCONNECTED"
+        - "SERVER_ERROR"
+        - "SOCKET_ERROR"
+        - "SOCKET_CLOSED"
 
   PeerParametsers:
     type: object
@@ -1385,7 +1385,7 @@ definitions:
         type: integer
       codec:
         type: string
-        example: "opus"
+        example: "OPUS"
       media_id:
         description: Mediaを特定するためのIDです
         type: string
@@ -1406,9 +1406,9 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "open"
-        - "close"
-        - "error"
+        - "OPEN"
+        - "CLOSE"
+        - "ERROR"
         example: "TYPE_OF_EVENT"
       open_options:
         type: object
@@ -1447,9 +1447,9 @@ definitions:
         type: string
         example: "BINARY_UTF8"
       type:
-        description: 常に'data'が設定されます
+        description: 常に'DATA'が設定されます
         type: string
-        example: "data"
+        example: "DATA"
 
 
 
@@ -1467,9 +1467,9 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "stream"
-        - "close"
-        - "error"
+        - "STREAM"
+        - "CLOSE"
+        - "ERROR"
         example: "TYPE_OF_EVENT"
       stream_options:
         description: streamの内容を示します。streamイベントの場合のみ
