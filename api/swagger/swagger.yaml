@@ -12,8 +12,6 @@ info:
 host: "127.0.0.1:3000"
 basePath: /v1
 tags:
-  - name: 0.engines
-    description: WebRTCエンジンを管理します
   - name: 1.peers
     description: SkyWayサーバと接続しセッション管理を行うためのPeerオブジェクトを管理します
   - name: 2.data
@@ -25,191 +23,6 @@ schemes:
   - http
 
 paths:
-  /engines/libwebrtc:
-    post:
-      tags:
-        - 0.engines
-      summary: WebRTCエンジンとしてlibWebRTCを利用します
-      description: WebRTCエンジンとしてlibWebRTCを利用するためにリソースの割当を行います。この際Pluginのロードも同時に行います
-      operationId: libwebrtc
-      consumes:
-        - application/json
-      produces:
-        - application/json
-      parameters:
-        - in: body
-          required: true
-          name: body
-          description: libWebRTCにアクセスするためのエントリポイントを生成し利用するPluginを指定します
-          schema:
-            $ref: '#/definitions/LibWebRTCOptions'
-      responses:
-        '201':
-          description: successful operation
-          schema:
-            $ref: '#/definitions/EnginesResponse'
-        '400':
-          description: Invalid Input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "ENGINES_CREATE"
-              params:
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          enum:
-                          - "server"
-                          - "plugin"
-                          example: server
-                        message:
-                          type: string
-                          example: "libWebRTC Resource allocation failed"
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout
-
-  /engines/libwebrtc/{engine_id}:
-    delete:
-      tags:
-        - 0.engines
-      summary: WebRTCエンジンの解放処理を行います
-      description: WebRTCエンジンとして割り当てたlibwebrtcのリソースを開放します。全てのWebRTCセッションとデータ受け渡しのためのUDPポートをクローズします
-      operationId: libwebrtc_delete
-      produces:
-        - application/json
-      parameters:
-        - name: engine_id
-          type: integer
-          format: uint64
-          in: path
-          description: Native Client内に割り当てたlibWebRTCリソースを特定するためのIDです
-          required: true
-        - name: token
-          type: string
-          in: query
-          description: libWebRTCのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
-      responses:
-        '204':
-          description: No Content
-        '400':
-          description: Invalid input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "ENGINES_DELETE"
-              params:
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          enum:
-                          - "engine_id"
-                          - "token"
-                          example: engine_id
-                        message:
-                          type: string
-                          example: "engine_id field is not specified"
-        '403':
-          description: Forbidden(tokenが間違っている場合)
-        '404':
-          description: Not Found(engine_idが間違っている場合)
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout
-    patch:
-      tags:
-        - 0.engines
-      summary: WebRTCエンジンの解放処理を行います
-      description: PLUGIN動作変更のためのメッセージを通知します
-      operationId: engines_patch_libwebrtc
-      produces:
-        - application/json
-      parameters:
-        - name: engine_id
-          type: integer
-          format: uint64
-          in: path
-          description: Native Client内に割り当てたリソースを特定するためのIDです
-          required: true
-        - name: token
-          type: string
-          in: query
-          description: libWebRTCのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-          required: true
-        - in: body
-          name: body
-          description: Pluginに送るメッセージを指定します
-          required: true
-          schema:
-            $ref: '#/definitions/PluginMessageObject'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/PluginMessageObject'
-        '400':
-          description: Invalid input
-          schema:
-            required: [ "command_type", "params" ]
-            properties:
-              command_type:
-                type: string
-                example: "ENGINES_PATCH"
-              params:
-                type: object
-                required: [ "errors" ]
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        field:
-                          type: string
-                          enum:
-                          - "engine_id"
-                          - "token"
-                          example: engine_id
-                        message:
-                          type: string
-                          example: "engine_id field is not specified"
-        '403':
-          description: Forbidden(tokenが間違っている場合)
-        '404':
-          description: Not Found(engine_idが間違っている場合)
-        '405':
-          description: Method Not Allowed
-        '406':
-          description: Not Acceptable
-        '408':
-          description: Request Timeout
-
-
 #========================start peer section============================
 
   /peers:
@@ -1286,58 +1099,6 @@ paths:
 #========================start definition section============================
 
 definitions:
-
-#POST /engines/janus
-  LibWebRTCOptions:
-    type: object
-    properties:
-      plugins:
-        description: Native Clientで利用するプラグインを指定します
-        type: array
-        items:
-          type: string
-        example: ["com.ntt.multipath", "com.ntt.sync"]
-        format: string
-
-  EnginesResponse:
-    type: object
-    required: [ "command_type", "params"]
-    properties:
-      command_type:
-        type: string
-        example: "ENGINES_CREATE"
-      params:
-        $ref: '#/definitions/EngineParameters'
-
-  EngineParameters:
-    type: object
-    required: [ "engine_id", "token" ]
-    properties:
-      engine_id:
-        type: integer
-        format: uint64
-        example: 525099922
-        description: Native Client内に割り当てたリソースを特定するためのIDです
-      token:
-        type: string
-        example: "9cf6b7d2-6220-49d5-bfea-387454fe23f0"
-        description: libWebRTCのリソースを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
-
-#PATCH /engines
-
-  PluginMessageObject:
-    type: object
-    required: [ "plugin_name", "message" ]
-    properties:
-      plugin_name:
-        type: string
-        format: uint64
-        example: com.ntt.passthrough
-        description: pluginを特定するための文字列です
-      message:
-        type: object
-        description: Pluginに与えるJSONのメッセージです。フォーマットはPluginに応じて変わります
-
 #========================start peer section============================
 
   PeerOptions:
@@ -1387,7 +1148,7 @@ definitions:
 #POST /peers/ID/media_connections
   PeerCallOptions:
     type: object
-    required: [ "peer_id", "token", "target_id", "constraints", "engine_params" ]
+    required: [ "peer_id", "token", "target_id", "constraints" ]
     properties:
       peer_id:
         description: "自身のPeerのidを指定します"
@@ -1402,8 +1163,6 @@ definitions:
         description: 接続対象のpeer_idを指定します
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
-      engine_params:
-        $ref: '#/definitions/EngineParameters'
       redirect_params:
         $ref: '#/definitions/MediaRedirectOptions'
 
@@ -1449,7 +1208,7 @@ definitions:
 
   PeerConnectOptions:
     type: object
-    required: [ "peer_id", "token", "target_id", "params",  "engine_params" ]
+    required: [ "peer_id", "token", "target_id", "params" ]
     properties:
       peer_id:
         description: "接続元のPeerのidを指定します"
@@ -1482,8 +1241,6 @@ definitions:
           data_id:
             type: string
             example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
-      engine_params:
-        $ref: '#/definitions/EngineParameters'
       redirect_params:
         $ref: '#/definitions/DataConnectionRedirectOptions'
 
@@ -1873,12 +1630,10 @@ definitions:
 
   MediaConnectionAnswerOptions:
     type: object
-    required: [ "constraints", "engine_params" ]
+    required: [ "constraints" ]
     properties:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
-      engine_params:
-        $ref: '#/definitions/EngineParameters'
 
   MediaConnectionAnswerResponse:
     type: object
