@@ -1408,10 +1408,6 @@ definitions:
         - "CLOSE"
         - "ERROR"
         example: "TYPE_OF_EVENT"
-      open_options:
-        type: object
-      close_options:
-        type: object
       error_message:
         description: エラーの内容を示します
         type: string
