@@ -273,6 +273,13 @@ paths:
       summary: Dataの待受ポート開放要求を送ります
       description: DataConnectionで転送するデータを受け渡すためのUDPポート開放要求を送信します
       operationId: data
+      parameters:
+        - in: body
+          name: body
+          description: Mediaの種類を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/DataOptions'
       consumes:
         - application/json
       produces:
@@ -1536,6 +1543,12 @@ definitions:
 
 #========================start Data section============================
 
+  DataOptions:
+    type: object
+    properties:
+      plugin_options:
+        $ref: '#/definitions/PluginOptions'
+
   DataSockParameters:
     type: object
     required: [ 'data_id', "port" ]
@@ -1595,6 +1608,23 @@ definitions:
         format: uint16
         example: 10001
 
+#========================start Plugin section============================
+
+  PluginOptions:
+    type: object
+    properties:
+      plugins:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "contentsocket"
+            initial_parameter:
+              type: string
+              example: "{port: 1000}"
+
 #========================start Media section============================
 
   MediaOptions:
@@ -1605,6 +1635,8 @@ definitions:
         type: boolean
         example: true
         description: MediaがVideoかどうかを指定します。falseの場合はAudioとして扱われます
+      plugin_options:
+        $ref: '#/definitions/PluginOptions'
 
   MediaParameters:
     type: object
