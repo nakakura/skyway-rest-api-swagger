@@ -277,13 +277,6 @@ paths:
         - application/json
       produces:
         - application/json
-      parameters:
-        - in: body
-          name: body
-          description: 送信するデータに関する情報を指定します
-          required: true
-          schema:
-            $ref: '#/definitions/DataSockOptions'
       responses:
         '201':
           description: successful operation
@@ -1529,14 +1522,6 @@ definitions:
         description: 接続相手のPeerのpeer_idです
 
 #========================start Data section============================
-
-  DataSockOptions:
-    type: object
-    properties:
-      serialization:
-        type: string
-        example: "BINARY_UTF8"
-        description: データのフォーマットを指定します。現在はBINARY_UTF8のみです
 
   DataSockParameters:
     type: object
