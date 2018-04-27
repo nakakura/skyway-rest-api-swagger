@@ -1367,6 +1367,13 @@ definitions:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
         example: 100
+      encoding_parameters:
+        type: array
+        items:
+          type: string
+      sampling_rate:
+        type: integer
+
 
   PeerAudioParameters:
     type: object
@@ -1385,6 +1392,12 @@ definitions:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
         example: 111
+      encoding_parameters:
+        type: array
+        items:
+          type: string
+      sampling_rate:
+        type: integer
 
 #========================start DataConnection section============================
 
