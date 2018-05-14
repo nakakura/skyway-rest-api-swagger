@@ -1385,9 +1385,11 @@ definitions:
       encoding_parameters:
         type: array
         items:
-          type: string
+          type: integer
+        example: [2]
       sampling_rate:
         type: integer
+        example: 90000
 
 
   PeerAudioParameters:
@@ -1410,9 +1412,11 @@ definitions:
       encoding_parameters:
         type: array
         items:
-          type: string
+          type: integer
+        example: [2]
       sampling_rate:
         type: integer
+        example: 48000
 
 #========================start DataConnection section============================
 
