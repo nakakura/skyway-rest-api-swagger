@@ -1523,6 +1523,8 @@ definitions:
               type: integer
               format: uint16
               example: 10001
+            plugin_options:
+              $ref: '#/definitions/PluginOptions'
       audio:
           type: object
           properties:
@@ -1536,6 +1538,8 @@ definitions:
               type: integer
               format: uint16
               example: 10001
+            plugin_options:
+              $ref: '#/definitions/PluginOptions'
 
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
@@ -1588,6 +1592,8 @@ definitions:
         $ref: '#/definitions/DataConnectionFeedOptions'
       redirect_params:
         $ref: '#/definitions/DataConnectionRedirectOptions'
+      plugin_options:
+        $ref: '#/definitions/PluginOptions'
 
   DataConnectionFeedOptions:
     type: object
