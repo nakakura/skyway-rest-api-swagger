@@ -9,7 +9,7 @@ info:
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
-host: "127.0.0.1:3000"
+host: "127.0.0.1:8000"
 basePath: /v1
 tags:
   - name: 1.peers
@@ -18,6 +18,8 @@ tags:
     description: DataChannelを利用するためのDataConnectionオブジェクトと転送するデータの送受信方法について指定します
   - name: 3.media
     description: MediaStreamを利用するためのMediaConnectionオブジェクトと転送するメディアの送受信方法について指定します
+  - name: 4.plugin
+    description: 起動中のPluginを外部から操作するために利用します
 
 schemes:
   - http
@@ -514,6 +516,8 @@ paths:
               data_id:
                 type: string
                 example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
+              plugin_ids:
+                $ref: '#/definitions/PluginIds'
         '400':
           description: Invalid input
           schema:
@@ -1010,6 +1014,10 @@ paths:
           schema:
             $ref: '#/definitions/MediaRedirectOptions'
       responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/MediaConnectionRedirectResponse'
         '204':
           description: successful operation
         '400':
@@ -1099,7 +1107,67 @@ paths:
         '408':
           description: Request Timeout
 
+#=============================plugin section=======================
 
+  /plugin/{plugin_id}:
+    put:
+      tags:
+        - 4.plugin
+      summary: 実行中のPluginに外部から値を与えます
+      description: 実行中のPluginに任意の文字列を与えます
+      operationId: plugin_put
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "plugin_id"
+          in: "path"
+          description: "Pluginを特定するためのidを指定します"
+          required: true
+          type: "string"
+        - in: body
+          name: body
+          description: Pluginに与える文字列を設定します
+          required: true
+          schema:
+            $ref: '#/definitions/PluginPutValues'
+      responses:
+        '204':
+          description: successful operation
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: peer_id
+                        message:
+                          type: string
+                          example: "peer_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(data_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
 #========================start definition section============================
 
 definitions:
@@ -1524,7 +1592,7 @@ definitions:
               format: uint16
               example: 10001
             plugin_options:
-              $ref: '#/definitions/PluginOptions'
+              $ref: '#/definitions/PluginLoadOptions'
       audio:
           type: object
           properties:
@@ -1539,7 +1607,7 @@ definitions:
               format: uint16
               example: 10001
             plugin_options:
-              $ref: '#/definitions/PluginOptions'
+              $ref: '#/definitions/PluginLoadOptions'
 
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
@@ -1563,7 +1631,7 @@ definitions:
     type: object
     properties:
       plugin_options:
-        $ref: '#/definitions/PluginOptions'
+        $ref: '#/definitions/PluginLoadOptions'
 
   DataSockParameters:
     type: object
@@ -1584,6 +1652,8 @@ definitions:
       ip_v6:
         description: Dataを待ち受けるIPv6アドレスです
         type: string
+      plugin_ids:
+        $ref: '#/definitions/PluginIds'
 
   DataConnectionPutOptions:
     type: object
@@ -1593,7 +1663,7 @@ definitions:
       redirect_params:
         $ref: '#/definitions/DataConnectionRedirectOptions'
       plugin_options:
-        $ref: '#/definitions/PluginOptions'
+        $ref: '#/definitions/PluginLoadOptions'
 
   DataConnectionFeedOptions:
     type: object
@@ -1626,25 +1696,6 @@ definitions:
         format: uint16
         example: 10001
 
-#========================start Plugin section============================
-
-  PluginOptions:
-    type: object
-    required: [ "plugins" ]
-    properties:
-      plugins:
-        type: array
-        items:
-          type: object
-          required: [ "name" ]
-          properties:
-            name:
-              type: string
-              example: "contentsocket"
-            initial_parameter:
-              type: string
-              example: "{port: 1000}"
-
 #========================start Media section============================
 
   MediaOptions:
@@ -1656,7 +1707,7 @@ definitions:
         example: true
         description: MediaがVideoかどうかを指定します。falseの場合はAudioとして扱われます
       plugin_options:
-        $ref: '#/definitions/PluginOptions'
+        $ref: '#/definitions/PluginLoadOptions'
 
   MediaParameters:
     type: object
@@ -1677,6 +1728,8 @@ definitions:
       ip_v6:
         description: Mediaを待ち受けるIPv6アドレスです
         type: string
+      plugin_ids:
+        $ref: '#/definitions/PluginIds'
 
   MediaConnectionAnswerOptions:
     type: object
@@ -1706,6 +1759,8 @@ definitions:
             description: Videoを特定するためのIDです
             type: string
             example: "vi-a32e5933-828b-44e4-849d-0826ced78807"
+          video_plugin_ids:
+            $ref: '#/definitions/PluginIds'
           audio_port:
             description: Audioを受け取るNative Clientのポート番号を指定します
             type: integer
@@ -1715,3 +1770,56 @@ definitions:
             description: Audioを特定するためのIDです
             type: string
             example: "au-e673037c-6ce8-48cb-9834-ba4ed5026a83"
+          audio_plugin_ids:
+            $ref: '#/definitions/PluginIds'
+
+  MediaConnectionRedirectResponse:
+    type: object
+    required: [ "command_type", "params"]
+    properties:
+      command_type:
+        type: string
+        example: "MEDIA_CONNECTION_REDIRECT"
+      params:
+        type: object
+        properties:
+          video_plugin_ids:
+            $ref: '#/definitions/PluginIds'
+          audio_plugin_ids:
+            $ref: '#/definitions/PluginIds'
+
+#========================start Plugin section============================
+
+  PluginLoadOptions:
+    type: object
+    required: [ "plugins" ]
+    properties:
+      plugins:
+        type: array
+        items:
+          type: object
+          required: [ "name" ]
+          properties:
+            name:
+              type: string
+              example: "contentsocket"
+            initial_parameter:
+              type: string
+              example: "{port: 1000}"
+
+  PluginIds:
+    type: array
+    items:
+      type: object
+      required: ["name", "plugin_id"]
+      properties:
+        name:
+          type: string
+          example: content_socket
+        plugin_id:
+          type: string
+          example: "pl-2f5695a7-4896-4070-9f51-55f7d739808f"
+
+  PluginPutValues:
+    type: string
+    example: "{json: value}"
