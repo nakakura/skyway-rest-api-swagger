@@ -990,7 +990,7 @@ paths:
     post:
       tags:
         - 3.media
-      summary: MediaConnectionで受信したMediaのリダイレクト先を指定
+      summary: (このAPIは今後追加されるもので現時点では未実装です)MediaConnectionで受信したMediaのリダイレクト先を指定
       description: Mediaのリダイレクト先のIPアドレスとポート番号を指定
       operationId: media_redirect
       consumes:
@@ -1682,6 +1682,8 @@ definitions:
     properties:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
+      redirect_params:
+        $ref: '#/definitions/MediaRedirectOptions'
 
   MediaConnectionAnswerResponse:
     type: object
