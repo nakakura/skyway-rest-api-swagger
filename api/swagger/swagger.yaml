@@ -1109,7 +1109,7 @@ paths:
 
 #=============================plugin section=======================
 
-  /plugin/{plugin_id}:
+  /v1/plugin/{plugin_id}:
     put:
       tags:
         - 4.plugin
