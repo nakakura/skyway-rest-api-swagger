@@ -27,7 +27,7 @@ schemes:
 paths:
 #========================start peer section============================
 
-  /peers:
+  /v1/peers:
     post:
       tags:
         - 1.peers
@@ -82,7 +82,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /peers/{peer_id}:
+  /v1/peers/{peer_id}:
     delete:
       tags:
         - 1.peers
@@ -141,7 +141,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /peers/{peer_id}/events:
+  /v1/peers/{peer_id}/events:
     get:
       tags:
         - 1.peers
@@ -203,7 +203,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /peers/{peer_id}/status:
+  /v1/peers/{peer_id}/status:
     get:
       tags:
         - 1.peers
@@ -268,7 +268,7 @@ paths:
 
 #========================start Data section============================
 
-  /data:
+  /v1/data:
     post:
       tags:
         - 2.data
@@ -321,7 +321,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /data/{data_id}:
+  /v1/data/{data_id}:
     delete:
       tags:
         - 2.data
@@ -373,12 +373,12 @@ paths:
         '408':
           description: Request Timeout
 
-  /data/connections:
+  /v1/data/connections:
     post:
       tags:
         - 2.data
       summary: リモートのPeerへのDataConnectionConnection確立を開始します
-      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/v1/peers/{peer_id}/eventsを監視してください
       operationId: data_connections_create
       consumes:
         - application/json
@@ -430,7 +430,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /data/connections/{data_connection_id}:
+  /v1/data/connections/{data_connection_id}:
     delete:
       tags:
         - 2.data
@@ -552,7 +552,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /data/connections/{data_connection_id}/events:
+  /v1/data/connections/{data_connection_id}/events:
     get:
       tags:
         - 2.data
@@ -604,7 +604,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /data/connections/{data_connection_id}/status:
+  /v1/data/connections/{data_connection_id}/status:
     get:
       tags:
         - 2.data
@@ -660,7 +660,7 @@ paths:
 #========================start Stream section============================
 
 
-  /media:
+  /v1/media:
     post:
       tags:
         - 3.media
@@ -713,7 +713,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/{media_id}:
+  /v1/media/{media_id}:
     delete:
       tags:
         - 3.media
@@ -765,12 +765,12 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/connections:
+  /v1/media/connections:
     post:
       tags:
         - 3.media
       summary: リモートのPeerへのMediaConnection確立を開始します
-      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
+      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/v1/peers/{peer_id}/eventsを監視してください
       operationId: media_connection_create
       consumes:
         - application/json
@@ -822,7 +822,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/connections/{media_connection_id}:
+  /v1/media/connections/{media_connection_id}:
     delete:
       tags:
         - 3.media
@@ -876,7 +876,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/connections/{media_connection_id}/answer:
+  /v1/media/connections/{media_connection_id}/answer:
     post:
       tags:
         - 3.media
@@ -938,7 +938,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/connections/{media_connection_id}/events:
+  /v1/media/connections/{media_connection_id}/events:
     get:
       tags:
         - 3.media
@@ -990,7 +990,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/connections/{media_connection_id}/redirect:
+  /v1/media/connections/{media_connection_id}/redirect:
     post:
       tags:
         - 3.media
@@ -1054,7 +1054,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /media/connections/{media_connection_id}/status:
+  /v1/media/connections/{media_connection_id}/status:
     get:
       tags:
         - 3.media
@@ -1217,7 +1217,7 @@ definitions:
             example: "pt-9749250e-d157-4f80-9ee2-359ce8524308"
             description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
 
-#POST /peers/ID/media_connections
+#POST /v1/peers/ID/media_connections
   PeerCallOptions:
     type: object
     required: [ "peer_id", "token", "target_id", "constraints" ]
@@ -1274,7 +1274,7 @@ definitions:
             example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
             description: MediaConnectionを特定するためのIDです
 
-#POST /peers/ID/data_connections
+#POST /v1/peers/ID/data_connections
 
   PeerConnectOptions:
     type: object
@@ -1349,7 +1349,7 @@ definitions:
             description: DataConnectionを特定するためのIDです
 
 
-#GET /peers/ID/events
+#GET /v1/peers/ID/events
   PeerEventMessage:
     type: object
     required: [ "event" ]
@@ -1420,7 +1420,7 @@ definitions:
         example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
 
 
-#GET /peers/ID/status
+#GET /v1/peers/ID/status
   PeerStatusMessage:
     type: object
     required: [ "peer_id", "disconnected" ]
@@ -1676,7 +1676,7 @@ definitions:
             type: string
             example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
 
- #PUT /data/connections/ID/redirect/ID
+ #PUT /v1/data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
     type: object
     required: [ "port" ]
