@@ -10,7 +10,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 host: "127.0.0.1:8000"
-basePath: /v1
+basePath: /
 tags:
   - name: 1.peers
     description: SkyWayサーバと接続しセッション管理を行うためのPeerオブジェクトを管理します
@@ -25,7 +25,7 @@ schemes:
 paths:
 #========================start peer section============================
 
-  /v1/peers:
+  /peers:
     post:
       tags:
         - 1.peers
@@ -80,7 +80,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/peers/{peer_id}:
+  /peers/{peer_id}:
     delete:
       tags:
         - 1.peers
@@ -139,7 +139,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/peers/{peer_id}/events:
+  /peers/{peer_id}/events:
     get:
       tags:
         - 1.peers
@@ -201,7 +201,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/peers/{peer_id}/status:
+  /peers/{peer_id}/status:
     get:
       tags:
         - 1.peers
@@ -266,7 +266,7 @@ paths:
 
 #========================start Data section============================
 
-  /v1/data:
+  /data:
     post:
       tags:
         - 2.data
@@ -312,7 +312,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/data/{data_id}:
+  /data/{data_id}:
     delete:
       tags:
         - 2.data
@@ -364,12 +364,12 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/data/connections:
+  /data/connections:
     post:
       tags:
         - 2.data
       summary: リモートのPeerへのDataConnectionConnection確立を開始します
-      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/v1/peers/{peer_id}/eventsを監視してください
+      description: リモートのpeerへ発信し、DataConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
       operationId: data_connections_create
       consumes:
         - application/json
@@ -421,7 +421,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/data/connections/{data_connection_id}:
+  /data/connections/{data_connection_id}:
     delete:
       tags:
         - 2.data
@@ -541,7 +541,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/data/connections/{data_connection_id}/events:
+  /data/connections/{data_connection_id}/events:
     get:
       tags:
         - 2.data
@@ -593,7 +593,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/data/connections/{data_connection_id}/status:
+  /data/connections/{data_connection_id}/status:
     get:
       tags:
         - 2.data
@@ -649,7 +649,7 @@ paths:
 #========================start Stream section============================
 
 
-  /v1/media:
+  /media:
     post:
       tags:
         - 3.media
@@ -702,7 +702,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/media/{media_id}:
+  /media/{media_id}:
     delete:
       tags:
         - 3.media
@@ -754,12 +754,12 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/media/connections:
+  /media/connections:
     post:
       tags:
         - 3.media
       summary: リモートのPeerへのMediaConnection確立を開始します
-      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/v1/peers/{peer_id}/eventsを監視してください
+      description: リモートのpeerへ発信し、MediaConnectionの確立を試みます。接続確立は非同期で行われるため、/peers/{peer_id}/eventsを監視してください
       operationId: media_connection_create
       consumes:
         - application/json
@@ -811,7 +811,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/media/connections/{media_connection_id}:
+  /media/connections/{media_connection_id}:
     delete:
       tags:
         - 3.media
@@ -865,7 +865,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/media/connections/{media_connection_id}/answer:
+  /media/connections/{media_connection_id}/answer:
     post:
       tags:
         - 3.media
@@ -927,7 +927,7 @@ paths:
         '408':
           description: Request Timeout
 
-  /v1/media/connections/{media_connection_id}/events:
+  /media/connections/{media_connection_id}/events:
     get:
       tags:
         - 3.media
@@ -980,7 +980,7 @@ paths:
           description: Request Timeout
 
 
-  /v1/media/connections/{media_connection_id}/status:
+  /media/connections/{media_connection_id}/status:
     get:
       tags:
         - 3.media
@@ -1083,7 +1083,7 @@ definitions:
             example: "pt-9749250e-d157-4f80-9ee2-359ce8524308"
             description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
 
-#POST /v1/peers/ID/media_connections
+#POST /peers/ID/media_connections
   PeerCallOptions:
     type: object
     required: [ "peer_id", "token", "target_id", "constraints" ]
@@ -1140,7 +1140,7 @@ definitions:
             example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
             description: MediaConnectionを特定するためのIDです
 
-#POST /v1/peers/ID/data_connections
+#POST /peers/ID/data_connections
 
   PeerConnectOptions:
     type: object
@@ -1215,7 +1215,7 @@ definitions:
             description: DataConnectionを特定するためのIDです
 
 
-#GET /v1/peers/ID/events
+#GET /peers/ID/events
   PeerEventMessage:
     type: object
     required: [ "event" ]
@@ -1286,7 +1286,7 @@ definitions:
         example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
 
 
-#GET /v1/peers/ID/status
+#GET /peers/ID/status
   PeerStatusMessage:
     type: object
     required: [ "peer_id", "disconnected" ]
@@ -1316,11 +1316,6 @@ definitions:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
         example: 100
-      encoding_parameters:
-        type: array
-        items:
-          type: integer
-        example: [2]
       sampling_rate:
         type: integer
         example: 90000
@@ -1343,11 +1338,6 @@ definitions:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
         example: 111
-      encoding_parameters:
-        type: array
-        items:
-          type: integer
-        example: [2]
       sampling_rate:
         type: integer
         example: 48000
@@ -1529,7 +1519,7 @@ definitions:
             type: string
             example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
 
- #PUT /v1/data/connections/ID/redirect/ID
+ #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
     type: object
     required: [ "port" ]
