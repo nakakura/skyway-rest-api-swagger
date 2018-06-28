@@ -1236,8 +1236,40 @@ definitions:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       redirect_params:
-        $ref: '#/definitions/MediaRedirectOptions'
+        $ref: '#/definitions/PeeerCallRedirectOptions'
 
+
+ #PUT /media_connections/ID/redirect/ID
+  PeeerCallRedirectOptions:
+    type: object
+    properties:
+      video:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10001
+      audio:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10001
+              
   PeerCallConstraints:
     type: object
     required: [ "video", "audio" ]
@@ -1584,7 +1616,7 @@ definitions:
               type: integer
               format: uint16
               example: 10001
-            plugin_options:
+            receiver_plugin_options:
               $ref: '#/definitions/PluginLoadOptions'
       audio:
           type: object
@@ -1599,7 +1631,7 @@ definitions:
               type: integer
               format: uint16
               example: 10001
-            plugin_options:
+            receiver_plugin_options:
               $ref: '#/definitions/PluginLoadOptions'
 
 #GET /media_connections/ID/status
@@ -1655,7 +1687,7 @@ definitions:
         $ref: '#/definitions/DataConnectionFeedOptions'
       redirect_params:
         $ref: '#/definitions/DataConnectionRedirectOptions'
-      plugin_options:
+      receiver_plugin_options:
         $ref: '#/definitions/PluginLoadOptions'
 
   DataConnectionFeedOptions:
@@ -1699,7 +1731,7 @@ definitions:
         type: boolean
         example: true
         description: MediaがVideoかどうかを指定します。falseの場合はAudioとして扱われます
-      plugin_options:
+      sender_plugin_options:
         $ref: '#/definitions/PluginLoadOptions'
 
   MediaParameters:
