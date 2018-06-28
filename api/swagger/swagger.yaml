@@ -1269,7 +1269,7 @@ definitions:
               type: integer
               format: uint16
               example: 10001
-              
+
   PeerCallConstraints:
     type: object
     required: [ "video", "audio" ]
@@ -1616,7 +1616,7 @@ definitions:
               type: integer
               format: uint16
               example: 10001
-            receiver_plugin_options:
+            receiver_plugins:
               $ref: '#/definitions/PluginLoadOptions'
       audio:
           type: object
@@ -1631,7 +1631,7 @@ definitions:
               type: integer
               format: uint16
               example: 10001
-            receiver_plugin_options:
+            receiver_plugins:
               $ref: '#/definitions/PluginLoadOptions'
 
 #GET /media_connections/ID/status
@@ -1655,7 +1655,7 @@ definitions:
   DataOptions:
     type: object
     properties:
-      plugin_options:
+      sender_plugins:
         $ref: '#/definitions/PluginLoadOptions'
 
   DataSockParameters:
@@ -1687,7 +1687,7 @@ definitions:
         $ref: '#/definitions/DataConnectionFeedOptions'
       redirect_params:
         $ref: '#/definitions/DataConnectionRedirectOptions'
-      receiver_plugin_options:
+      receiver_plugins:
         $ref: '#/definitions/PluginLoadOptions'
 
   DataConnectionFeedOptions:
@@ -1731,7 +1731,7 @@ definitions:
         type: boolean
         example: true
         description: MediaがVideoかどうかを指定します。falseの場合はAudioとして扱われます
-      sender_plugin_options:
+      sender_plugins:
         $ref: '#/definitions/PluginLoadOptions'
 
   MediaParameters:
@@ -1816,21 +1816,17 @@ definitions:
 #========================start Plugin section============================
 
   PluginLoadOptions:
-    type: object
-    required: [ "plugins" ]
-    properties:
-      plugins:
-        type: array
-        items:
-          type: object
-          required: [ "name" ]
-          properties:
-            name:
-              type: string
-              example: "contentsocket"
-            initial_parameter:
-              type: string
-              example: "{port: 1000}"
+    type: array
+    items:
+      type: object
+      required: [ "name" ]
+      properties:
+        name:
+          type: string
+          example: "contentsocket"
+        initial_parameter:
+          type: string
+          example: "{port: 1000}"
 
   PluginIds:
     type: array
