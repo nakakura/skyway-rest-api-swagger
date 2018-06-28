@@ -1687,8 +1687,6 @@ definitions:
         $ref: '#/definitions/DataConnectionFeedOptions'
       redirect_params:
         $ref: '#/definitions/DataConnectionRedirectOptions'
-      receiver_plugins:
-        $ref: '#/definitions/PluginLoadOptions'
 
   DataConnectionFeedOptions:
     type: object
@@ -1716,7 +1714,9 @@ definitions:
         type: integer
         format: uint16
         example: 10001
-
+      receiver_plugins:
+        $ref: '#/definitions/PluginLoadOptions'
+        
 #========================start Media section============================
 
   MediaOptions:
