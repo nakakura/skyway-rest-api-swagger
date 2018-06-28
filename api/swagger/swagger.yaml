@@ -1242,6 +1242,9 @@ definitions:
     type: object
     required: [ "video", "audio" ]
     properties:
+      metadata:
+        description: コネクションに関連付けされる任意のメタデータで、接続先のPeerに渡されます。
+        type: string
       video:
         description: Videoを転送するかどうか指定します
         type: boolean
