@@ -1555,9 +1555,9 @@ definitions:
         description: 信頼性のあるdata channelの場合にtrueです。コネクションの開始時に定義されます。
         type: boolean
       serialization:
-        description: コネクションを通じて送信されるデータのserializeフォーマットです。BINARY (デフォルト値)、 BINARY_UTF8、 JSON、 または NONE となります。
+        description: コネクションを通じて送信されるデータのserializeフォーマットです。BINARY (デフォルト値)、 JSON、 または NONE となります。
         type: string
-        example: "BINARY_UTF8"
+        example: "BINARY"
       type:
         description: 常に'DATA'が設定されます
         type: string
