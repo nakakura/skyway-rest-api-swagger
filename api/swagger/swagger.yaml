@@ -1,8 +1,8 @@
 swagger: '2.0'
 info:
-  description: 'SkyWay Engine for Linuxを操作するためのREST API仕様書'
+  description: 'SkyWay WebRTC Gateway REST API仕様書'
   version: 0.0.1
-  title: SkyWay Engine for Linux REST API
+  title: SkyWay WebRTC Gateway REST API
   termsOfService: 'http://nttcom.github.io/skyway/'
   contact:
     email: skyway@skyway.io
@@ -1236,11 +1236,11 @@ definitions:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       redirect_params:
-        $ref: '#/definitions/PeeerCallRedirectOptions'
+        $ref: '#/definitions/PeerCallRedirectOptions'
 
 
  #PUT /media_connections/ID/redirect/ID
-  PeeerCallRedirectOptions:
+  PeerCallRedirectOptions:
     type: object
     properties:
       video:
@@ -1256,6 +1256,8 @@ definitions:
               type: integer
               format: uint16
               example: 10001
+            receiver_plugins:
+              $ref: '#/definitions/PluginLoadOptions'
       audio:
           type: object
           properties:
@@ -1269,6 +1271,8 @@ definitions:
               type: integer
               format: uint16
               example: 10001
+            receiver_plugins:
+              $ref: '#/definitions/PluginLoadOptions'
 
   PeerCallConstraints:
     type: object
@@ -1716,7 +1720,7 @@ definitions:
         example: 10001
       receiver_plugins:
         $ref: '#/definitions/PluginLoadOptions'
-        
+
 #========================start Media section============================
 
   MediaOptions:
