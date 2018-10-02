@@ -1799,6 +1799,9 @@ definitions:
         type: integer
         format: uint16
         example: 10001
+      ssrc:
+        description: RTPで定義されるのSSRCフィールドです。
+        type: string
       ip_v4:
         description: Mediaを待ち受けるIPv4アドレスです
         type: string
