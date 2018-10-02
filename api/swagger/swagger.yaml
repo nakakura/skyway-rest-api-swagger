@@ -1603,6 +1603,40 @@ definitions:
         description: エラーの内容を示します
         type: string
 
+  MediaAnswerRedirectOptions:
+    type: object
+    properties:
+      video:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10001
+            receiver_plugins:
+              $ref: '#/definitions/PluginLoadOptions'
+      audio:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10001
+            receiver_plugins:
+              $ref: '#/definitions/PluginLoadOptions'
+
  #PUT /media_connections/ID/redirect/ID
   MediaRedirectOptions:
     type: object
@@ -1637,6 +1671,24 @@ definitions:
               example: 10001
             receiver_plugins:
               $ref: '#/definitions/PluginLoadOptions'
+      rtcp:
+        type: array
+        items:
+          type: object
+          properties:
+            media_id:
+              type: string
+              example: "vi-61769866-f16b-470c-9e8a-e1f8afc87096"
+            port:
+              type: integer
+              format: uint16
+              example: 20010
+            ip_v4:
+              type: string
+              example: "203.0.113.1"
+            ip_v6:
+              type: string
+              example: "2001:db8::1"
 
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
@@ -1763,7 +1815,7 @@ definitions:
       constraints:
         $ref: '#/definitions/PeerCallConstraints'
       redirect_params:
-        $ref: '#/definitions/MediaRedirectOptions'
+        $ref: '#/definitions/MediaAnswerRedirectOptions'
 
   MediaConnectionAnswerResponse:
     type: object
