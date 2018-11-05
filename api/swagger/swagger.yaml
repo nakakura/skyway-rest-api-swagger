@@ -1705,6 +1705,22 @@ definitions:
       remote_id:
         type: string
         description: 接続相手のPeerのpeer_idです
+      ssrc:
+        description: 自身のRTPSenderのSSRCです
+        type: array
+        items:
+          type: object
+          required: ["media_id"]
+          properties:
+            media_id:
+              type: string
+              example: "vi-61769866-f16b-470c-9e8a-e1f8afc87096"
+            ssrc:
+              type: integer
+              format: uint32
+              example: 2165193637
+
+
 
 #========================start Data section============================
 
@@ -1799,9 +1815,6 @@ definitions:
         type: integer
         format: uint16
         example: 10001
-      ssrc:
-        description: RTPで定義されるのSSRCフィールドです。
-        type: string
       ip_v4:
         description: Mediaを待ち受けるIPv4アドレスです
         type: string
