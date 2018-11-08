@@ -713,6 +713,7 @@ paths:
         '408':
           description: Request Timeout
 
+
   /media/{media_id}:
     delete:
       tags:
@@ -727,6 +728,111 @@ paths:
           type: string
           in: path
           description: Mediaを特定するためのIDを指定します
+          required: true
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_DELETE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: media_id
+                        message:
+                          type: string
+                          example: "media_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/rtcp:
+    post:
+      tags:
+        - 3.media
+      summary: Mediaの待受ポート開放要求を送ります
+      description: MediaConnectionで転送するMediaを受け渡すためのUDPポート開放要求を送信します
+      operationId: media_rtcp_create
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: bodyには空のJSON文字列("{}"")が必要です
+          schema:
+            type: object
+      responses:
+        '201':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MediaRtcpParameters'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CREATE"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: is_video
+                        message:
+                          type: string
+                          example: "is_video field is not specified"
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+
+  /media/rtcp/{rtcp_id}:
+    delete:
+      tags:
+        - 3.media
+      summary: Mediaの解放
+      description: MediaConnectionで転送するRTCPを受け渡すためのUDPポートの閉鎖要求を送信します。MediaConnectionの中で利用中であればエラーを返します。
+      operationId: media_rtcp_delete
+      produces:
+        - application/json
+      parameters:
+        - name: rtcp_id
+          type: string
+          in: path
+          description: RTCPを特定するためのIDを指定します
           required: true
       responses:
         '204':
@@ -1782,6 +1888,26 @@ definitions:
         type: string
       plugin_ids:
         $ref: '#/definitions/PluginIds'
+
+  MediaRtcpParameters:
+    type: object
+    required: [ 'rtcp_id', "port" ]
+    properties:
+      rtcp_id:
+        description: RTCP送信先を特定するためのIDです
+        type: string
+        example: "rc-4d053831-5dc2-461b-a358-d062d6115216"
+      port:
+        description: RTCPを待ち受けるポート番号です
+        type: integer
+        format: uint16
+        example: 10003
+      ip_v4:
+        description: RTCPを待ち受けるIPv4アドレスです
+        type: string
+      ip_v6:
+        description: RTCPを待ち受けるIPv6アドレスです
+        type: string
 
   MediaConnectionAnswerOptions:
     type: object
