@@ -1602,6 +1602,10 @@ definitions:
         description: Mediaを特定するためのIDです
         type: string
         example: "vi-61769866-f16b-470c-9e8a-e1f8afc87096"
+      rtcp_id:
+        description: RTCP転送ポートを特定するためのIDです
+        type: string
+        example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"
       payload_type:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
@@ -1624,6 +1628,10 @@ definitions:
         description: Mediaを特定するためのIDです
         type: string
         example: "au-8f8e8955-460e-4f3a-9440-1c851af328b5"
+      rtcp_id:
+        description: RTCP転送ポートを特定するためのIDです
+        type: string
+        example: "rc-85969322-99c4-4a65-b2d4-e20d86821f13"
       payload_type:
         description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
         type: integer
@@ -1896,7 +1904,7 @@ definitions:
       rtcp_id:
         description: RTCP送信先を特定するためのIDです
         type: string
-        example: "rc-4d053831-5dc2-461b-a358-d062d6115216"
+        example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"
       port:
         description: RTCPを待ち受けるポート番号です
         type: integer
