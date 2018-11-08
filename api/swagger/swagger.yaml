@@ -1338,6 +1338,7 @@ definitions:
         - "CONNECTION"
         - "CALL"
         - "STREAM"
+        - "AddTrack"
         - "CLOSE"
         - "ERROR"
         example: "TYPE_OF_EVENT"
@@ -1345,6 +1346,8 @@ definitions:
         $ref: '#/definitions/PeerParametsers'
       call_params:
         $ref: '#/definitions/CallParametsers'
+      add_track_params:
+        $ref: '#/definitions/AddTrackParametsers'
       data_params:
         $ref: '#/definitions/DataParametsers'
       error_message:
@@ -1363,7 +1366,7 @@ definitions:
 
   PeerParametsers:
     type: object
-    description: openイベントのときのみ含まれます
+    description: OPENイベントのときのみ含まれます
     required: [ "peer_id" ]
     properties:
       peer_id:
@@ -1376,7 +1379,7 @@ definitions:
         example: "pt-870c2c49-c16d-4c69-b1ad-fec7550564af"
 
   CallParametsers:
-    description: call及びstreamイベントのときのみ含まれます
+    description: CALL及びSTREAMイベントのときのみ含まれます
     type: object
     required: [ "media_connection_id" ]
     properties:
@@ -1385,8 +1388,18 @@ definitions:
         type: string
         example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
 
+  AddTrackParametsers:
+    description: AddTrackイベントのときのみ含まれます
+    type: object
+    required: [ "media_connection_id" ]
+    properties:
+      media_connection_id:
+        description: 相手側からのAddTrackに応答するのに必要なIDです。これはTrackを追加された既存のMediaStreamを示すmedia_connection_idと一致します
+        type: string
+        example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
+
   DataParametsers:
-    description: OnDataConnectionイベントのときのみ含まれます
+    description: CONNECTIONイベントのときのみ含まれます
     type: object
     required: [ "data_connection_id" ]
     properties:
