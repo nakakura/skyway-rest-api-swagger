@@ -1362,6 +1362,19 @@ definitions:
               example: 10001
             receiver_plugins:
               $ref: '#/definitions/PluginLoadOptions'
+      video_rtcp:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10003
       audio:
           type: object
           properties:
@@ -1374,9 +1387,22 @@ definitions:
             port:
               type: integer
               format: uint16
-              example: 10001
+              example: 10002
             receiver_plugins:
               $ref: '#/definitions/PluginLoadOptions'
+      audio_rtcp:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10004
 
   PeerCallConstraints:
     type: object
@@ -1746,6 +1772,19 @@ definitions:
               example: 10001
             receiver_plugins:
               $ref: '#/definitions/PluginLoadOptions'
+      video_rtcp:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10004
       audio:
           type: object
           properties:
@@ -1761,7 +1800,19 @@ definitions:
               example: 10001
             receiver_plugins:
               $ref: '#/definitions/PluginLoadOptions'
-
+      audio_rtcp:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10004
 
 #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
