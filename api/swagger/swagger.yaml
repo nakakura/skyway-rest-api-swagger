@@ -770,8 +770,8 @@ paths:
     post:
       tags:
         - 3.media
-      summary: Mediaの待受ポート開放要求を送ります
-      description: MediaConnectionで転送するMediaを受け渡すためのUDPポート開放要求を送信します
+      summary: RTCPの待受ポート開放要求を送ります
+      description: MediaConnectionで転送するRTCPを受け渡すためのUDPポート開放要求を送信します
       operationId: media_rtcp_create
       consumes:
         - application/json
@@ -795,7 +795,7 @@ paths:
             properties:
               command_type:
                 type: string
-                example: "MEDIA_CREATE"
+                example: "RTCP_CREATE"
               params:
                 type: object
                 required: [ "errors" ]
@@ -823,7 +823,7 @@ paths:
     delete:
       tags:
         - 3.media
-      summary: Mediaの解放
+      summary: RTCP待ち受けポーtpの解放
       description: MediaConnectionで転送するRTCPを受け渡すためのUDPポートの閉鎖要求を送信します。MediaConnectionの中で利用中であればエラーを返します。
       operationId: media_rtcp_delete
       produces:
@@ -844,7 +844,7 @@ paths:
             properties:
               command_type:
                 type: string
-                example: "MEDIA_DELETE"
+                example: "RTCP_DELETE"
               params:
                 type: object
                 required: [ "errors" ]
@@ -1109,7 +1109,7 @@ paths:
     post:
       tags:
         - 3.media
-      summary: callに応答します
+      summary: PLIパケットを送信します
       description: keyframe要求を相手に伝えるため、PLIパケットを送信します。どのメディアがkeyframe要求を必要としているか特定するため、メディアの転送先ポートとIPアドレスを指定します
       operationId: media_connection_pli
       consumes:
@@ -1124,7 +1124,7 @@ paths:
           type: "string"
         - in: body
           name: body
-          description: 相手側のPeerへ送信するMediaの情報を指定します
+          description: どのMediaに対するRTCP情報をRedirectするのか特定するために、Mediaの受信に利用しているIPアドレスとポート番号を指定します
           required: true
           schema:
             $ref: '#/definitions/MediaConnectionPliRequestOptions'
@@ -2076,6 +2076,7 @@ definitions:
   MediaConnectionPliRequestOptions:
     type: object
     required: [ "port" ]
+    description: どのMediaに対するRTCP情報をRedirectするのか特定するために、Mediaの受信に利用しているIPアドレスとポート番号を指定します
     properties:
         port:
           description: Mediaを待ち受けるポート番号です
