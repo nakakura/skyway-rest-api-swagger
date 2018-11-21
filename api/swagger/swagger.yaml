@@ -1002,7 +1002,7 @@ paths:
           description: 転送するMediaについての情報を指定します
           required: true
           schema:
-            $ref: '#/definitions/PeerCallOptions'
+            $ref: '#/definitions/AddTrackOptions'
       responses:
         '202':
           description: Accepted
@@ -1071,6 +1071,68 @@ paths:
           description: Accepted
           schema:
             $ref: '#/definitions/MediaConnectionAnswerResponse'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_ANSWER"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                          example: media_id
+                        message:
+                          type: string
+                          example: "media_id field is not specified"
+        '403':
+          description: Forbidden(不正な操作を行った場合)
+        '404':
+          description: Not Found(media_connection_idが間違っている場合)
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  /media/connections/{media_connection_id}/accept-track:
+    post:
+      tags:
+        - 3.media
+      summary: callに応答します
+      description: callにどのように応答するかMediaConstraintsを提供します
+      operationId: media_connection_accept_track
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのidを指定します"
+          required: true
+          type: "string"
+        - in: body
+          name: body
+          description: 相手側のPeerへ送信するMediaの情報を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/MediaConnectionAcceptTrackOptions'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/MediaConnectionAcceptTrackResponse'
         '400':
           description: Invalid input
           schema:
@@ -1643,6 +1705,46 @@ definitions:
         type: string
         example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
 
+  AddTrackOptions:
+    type: object
+    required: [ "constraints" ]
+    properties:
+      constraints:
+        $ref: '#/definitions/AddTrackConstraints'
+      redirect_params:
+        $ref: '#/definitions/AddTrackRedirectOptions'
+
+  AddTrackRedirectOptions:
+    type: object
+    properties:
+      rtcp:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10004
+
+  AddTrackConstraints:
+    type: object
+    required: [ "video", "audio" ]
+    properties:
+      metadata:
+        description: コネクションに関連付けされる任意のメタデータで、接続先のPeerに渡されます。
+        type: string
+      media_id:
+        description: AddTrackするMediaのIDを指定します
+        type: string
+        example: "vi-d53bb607-141f-45a4-b206-f7f4fb2d37b4"
+      media_params:
+        $ref: '#/definitions/PeerVideoParameters'
+
   AddTrackParametsers:
     description: AddTrackイベントのときのみ含まれます
     type: object
@@ -2046,6 +2148,46 @@ definitions:
       command_type:
         type: string
         example: "MEDIA_CONNECTION_ANSWER"
+      params:
+        type: object
+        properties:
+          video_port:
+            description: Videoを受け取るNative Clientのポート番号を指定します
+            type: integer
+            format: uint16
+            example: 10011
+          video_id:
+            description: Videoを特定するためのIDです
+            type: string
+            example: "vi-a32e5933-828b-44e4-849d-0826ced78807"
+          video_plugin_ids:
+            $ref: '#/definitions/PluginIds'
+          audio_port:
+            description: Audioを受け取るNative Clientのポート番号を指定します
+            type: integer
+            format: uint16
+            example: 10021
+          audio_id:
+            description: Audioを特定するためのIDです
+            type: string
+            example: "au-e673037c-6ce8-48cb-9834-ba4ed5026a83"
+          audio_plugin_ids:
+            $ref: '#/definitions/PluginIds'
+
+  MediaConnectionAcceptTrackOptions:
+    type: object
+    required: [ "constraints" ]
+    properties:
+      redirect_params:
+        $ref: '#/definitions/MediaAnswerRedirectOptions'
+
+  MediaConnectionAcceptTrackResponse:
+    type: object
+    required: [ "command_type", "params"]
+    properties:
+      command_type:
+        type: string
+        example: "MEDIA_CONNECTION_ACCEPT_TRACK"
       params:
         type: object
         properties:
