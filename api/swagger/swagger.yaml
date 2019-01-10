@@ -1733,15 +1733,8 @@ definitions:
 
   AddTrackConstraints:
     type: object
-    required: [ "video", "audio" ]
+    required: [ "media_params" ]
     properties:
-      metadata:
-        description: コネクションに関連付けされる任意のメタデータで、接続先のPeerに渡されます。
-        type: string
-      media_id:
-        description: AddTrackするMediaのIDを指定します
-        type: string
-        example: "vi-d53bb607-141f-45a4-b206-f7f4fb2d37b4"
       media_params:
         $ref: '#/definitions/PeerVideoParameters'
 
