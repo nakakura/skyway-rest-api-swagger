@@ -1892,6 +1892,7 @@ definitions:
         type: string
         enum:
         - "STREAM"
+        - "READY"
         - "CLOSE"
         - "ERROR"
         example: "TYPE_OF_EVENT"
