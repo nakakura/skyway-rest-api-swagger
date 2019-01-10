@@ -74,13 +74,15 @@ paths:
                           type: string
                           example: "key field is not specified"
         '403':
-          description: Forbidden(key, domainが間違っている場合)
+          description: Forbidden
         '405':
           description: Method Not Allowed
         '406':
           description: Not Acceptable
         '408':
           description: Request Timeout
+        '500':
+          description: Internal Server Error
 
   /peers/{peer_id}:
     delete:
