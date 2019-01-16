@@ -1657,7 +1657,6 @@ definitions:
         - "CONNECTION"
         - "CALL"
         - "STREAM"
-        - "AddTrack"
         - "CLOSE"
         - "ERROR"
         example: "TYPE_OF_EVENT"
@@ -1665,8 +1664,6 @@ definitions:
         $ref: '#/definitions/PeerParametsers'
       call_params:
         $ref: '#/definitions/CallParametsers'
-      add_track_params:
-        $ref: '#/definitions/AddTrackParametsers'
       data_params:
         $ref: '#/definitions/DataParametsers'
       error_message:
@@ -1894,6 +1891,7 @@ definitions:
         type: string
         enum:
         - "STREAM"
+        - "ADDTRACK"
         - "READY"
         - "CLOSE"
         - "ERROR"
@@ -1908,6 +1906,8 @@ definitions:
             description: videoの場合にtrue, audioの場合false
           stream_params:
             $ref: '#/definitions/MediaParameters'
+      add_track_params:
+        $ref: '#/definitions/AddTrackParametsers'
       close_options:
         type: object
       error_message:
