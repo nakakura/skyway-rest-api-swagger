@@ -1906,7 +1906,7 @@ definitions:
             description: videoの場合にtrue, audioの場合false
           stream_params:
             $ref: '#/definitions/MediaParameters'
-      add_track_params:
+      add_track_options:
         $ref: '#/definitions/AddTrackParametsers'
       close_options:
         type: object
