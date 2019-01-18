@@ -2172,8 +2172,15 @@ definitions:
 
   MediaConnectionAcceptTrackOptions:
     type: object
-    required: [ "constraints" ]
+    required: [ "rtcp_params", "constraints" ]
     properties:
+      rtcp_params:
+        type: object
+        required: ["rtcp_id"]
+        properties:
+          rtcp_id:
+            type: string
+            example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"
       redirect_params:
         $ref: '#/definitions/MediaAnswerRedirectOptions'
 
