@@ -1737,15 +1737,26 @@ definitions:
       media_params:
         $ref: '#/definitions/PeerVideoParameters'
 
-  AddTrackParametsers:
+  AddTrackParameters:
     description: AddTrackイベントのときのみ含まれます
     type: object
-    required: [ "media_connection_id" ]
+    required: [ "media_connection_id", "is_video", "codec", "payload_type"]
     properties:
-      media_connection_id:
-        description: 相手側からのAddTrackに応答するのに必要なIDです。これはTrackを追加された既存のMediaStreamを示すmedia_connection_idと一致します
+      is_video:
+        type: boolean
+        description: videoの場合にtrue, audioの場合false
+      band_width:
+        type: integer
+      codec:
         type: string
-        example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
+        example: "H264"
+      payload_type:
+        description: SDP内部でdynamic assignされるメディアのペイロード番号を指定
+        type: integer
+        example: 96
+      sampling_rate:
+        type: integer
+        example: 48000
 
   DataParametsers:
     description: CONNECTIONイベントのときのみ含まれます
@@ -1907,7 +1918,7 @@ definitions:
           stream_params:
             $ref: '#/definitions/MediaParameters'
       add_track_options:
-        $ref: '#/definitions/AddTrackParametsers'
+        $ref: '#/definitions/AddTrackParameters'
       close_options:
         type: object
       error_message:
