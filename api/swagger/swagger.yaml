@@ -2183,7 +2183,6 @@ definitions:
 
   MediaConnectionAcceptTrackOptions:
     type: object
-    required: [ "rtcp_params", "constraints" ]
     properties:
       rtcp_params:
         type: object
@@ -2193,7 +2192,39 @@ definitions:
             type: string
             example: "rc-970f2e5d-4da0-43e7-92b6-796678c104ad"
       redirect_params:
-        $ref: '#/definitions/MediaAnswerRedirectOptions'
+        $ref: '#/definitions/MediaAcceptRedirectOptions'
+
+  MediaAcceptRedirectOptions:
+    type: object
+    properties:
+      media:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10001
+            receiver_plugins:
+              $ref: '#/definitions/PluginLoadOptions'
+      media_rtcp:
+          type: object
+          properties:
+            ip_v4:
+              type: string
+              description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            ip_v6:
+              type: string
+              description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+            port:
+              type: integer
+              format: uint16
+              example: 10004
 
   MediaConnectionAcceptTrackResponse:
     type: object
