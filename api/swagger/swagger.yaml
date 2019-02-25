@@ -675,7 +675,7 @@ paths:
           required: true
           type: "string"
           format: "string"
-        - name: stats-types
+        - name: stats_types
           type: array
           items:
             type: string
@@ -1413,7 +1413,7 @@ paths:
           required: true
           type: "string"
           format: "string"
-        - name: stats-types
+        - name: stats_types
           type: array
           items:
             type: string
