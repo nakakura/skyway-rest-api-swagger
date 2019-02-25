@@ -25,7 +25,7 @@ schemes:
   - http
 
 paths:
-#========================start peer section============================
+  #========================start peer section============================
 
   /peers:
     post:
@@ -268,7 +268,7 @@ paths:
           description: Request Timeout
 
 
-#========================start Data section============================
+  #========================start Data section============================
 
   /data:
     post:
@@ -387,12 +387,12 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: body
-        name: body
-        description: 転送するDataについての情報を指定します
-        required: true
-        schema:
-          $ref: '#/definitions/PeerConnectOptions'
+        - in: body
+          name: body
+          description: 転送するDataについての情報を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/PeerConnectOptions'
       responses:
         '202':
           description: Accepted
@@ -659,7 +659,67 @@ paths:
         '408':
           description: Request Timeout
 
-#========================start Stream section============================
+  /data/connections/{data_connection_id}/webrtc-statistics:
+    get:
+      tags:
+        - 2.data
+      summary: DataConnection Objectの管理するDataChannelの状態を取得します
+      description: DataChannelの統計情報を取得します
+      operationId: data_connection_webrtc_statistics
+      produces:
+        - application/json
+      parameters:
+        - name: "data_connection_id"
+          in: "path"
+          description: "DataConnectionを特定するためのIDを指定します"
+          required: true
+          type: "string"
+          format: "string"
+        - name: stats-types
+          type: array
+          items:
+            type: string
+          in: query
+          description: statisticsの特定のフィールドのみが必要な場合、フィールド名を限定するために指定します。statisticsのJSONのうち第一階層のフィールド名を指定できます。存在しないフィールドを指定した場合はエラーになります
+          required: false
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/DataConnectionWebRTCStatisticsParams'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "DATA_CONNECTION_WEBRTC_STATISTICS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '403':
+          description: Forbidden(stats_typesで指定したフィールドが存在しない場合)
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  #========================start Stream section============================
 
 
   /media:
@@ -885,12 +945,12 @@ paths:
       produces:
         - application/json
       parameters:
-      - in: body
-        name: body
-        description: 転送するMediaについての情報を指定します
-        required: true
-        schema:
-          $ref: '#/definitions/PeerCallOptions'
+        - in: body
+          name: body
+          description: 転送するMediaについての情報を指定します
+          required: true
+          schema:
+            $ref: '#/definitions/PeerCallOptions'
       responses:
         '202':
           description: Accepted
@@ -1337,7 +1397,67 @@ paths:
         '408':
           description: Request Timeout
 
-#=============================plugin section=======================
+  /media/connections/{media_connection_id}/webrtc-statistics:
+    get:
+      tags:
+        - 3.media
+      summary: MediaConnection Objectの管理するMediaStreamの状態を取得します
+      description: MediaStareamの統計情報を取得します
+      operationId: media_connection_webrtc_statistics
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのIDを指定します"
+          required: true
+          type: "string"
+          format: "string"
+        - name: stats-types
+          type: array
+          items:
+            type: string
+          in: query
+          description: statisticsの特定のフィールドのみが必要な場合、フィールド名を限定するために指定します。statisticsのJSONのうち第一階層のフィールド名を指定できます。存在しないフィールドを指定した場合はエラーになります
+          required: false
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/MediaConnectionWebRTCStatisticsParams'
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_WEBRTC_STATISTICS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '403':
+          description: Forbidden(stats_typesで指定したフィールドが存在しない場合)
+        '404':
+          description: Not Found
+        '405':
+          description: Method Not Allowed
+        '406':
+          description: Not Acceptable
+        '408':
+          description: Request Timeout
+
+  #=============================plugin section=======================
 
   /plugin/{plugin_id}:
     put:
@@ -1401,7 +1521,7 @@ paths:
 #========================start definition section============================
 
 definitions:
-#========================start peer section============================
+  #========================start peer section============================
 
   PeerOptions:
     type: object
@@ -1447,7 +1567,7 @@ definitions:
             example: "pt-9749250e-d157-4f80-9ee2-359ce8524308"
             description: Peerオブジェクトを利用するために必要なトークンです。他のユーザのリソースに対する誤操作防止のために指定します
 
-#POST /peers/ID/media_connections
+  #POST /peers/ID/media_connections
   PeerCallOptions:
     type: object
     required: [ "peer_id", "token", "target_id", "constraints" ]
@@ -1469,66 +1589,66 @@ definitions:
         $ref: '#/definitions/PeerCallRedirectOptions'
 
 
- #PUT /media_connections/ID/redirect/ID
+  #PUT /media_connections/ID/redirect/ID
   PeerCallRedirectOptions:
     type: object
     properties:
       video:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10001
-            receiver_plugins:
-              $ref: '#/definitions/PluginLoadOptions'
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10001
+          receiver_plugins:
+            $ref: '#/definitions/PluginLoadOptions'
       video_rtcp:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10003
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10003
       audio:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10002
-            receiver_plugins:
-              $ref: '#/definitions/PluginLoadOptions'
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10002
+          receiver_plugins:
+            $ref: '#/definitions/PluginLoadOptions'
       audio_rtcp:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10004
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
 
   PeerCallConstraints:
     type: object
@@ -1569,7 +1689,7 @@ definitions:
             example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
             description: MediaConnectionを特定するためのIDです
 
-#POST /peers/ID/data_connections
+  #POST /peers/ID/data_connections
 
   PeerConnectOptions:
     type: object
@@ -1644,7 +1764,7 @@ definitions:
             description: DataConnectionを特定するためのIDです
 
 
-#GET /peers/ID/events
+  #GET /peers/ID/events
   PeerEventMessage:
     type: object
     required: [ "event" ]
@@ -1653,12 +1773,12 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "OPEN"
-        - "CONNECTION"
-        - "CALL"
-        - "STREAM"
-        - "CLOSE"
-        - "ERROR"
+          - "OPEN"
+          - "CONNECTION"
+          - "CALL"
+          - "STREAM"
+          - "CLOSE"
+          - "ERROR"
         example: "TYPE_OF_EVENT"
       peer_params:
         $ref: '#/definitions/PeerParametsers'
@@ -1670,15 +1790,15 @@ definitions:
         description: エラーの内容を示します
         type: string
         enum:
-        - "BROWSER_INCOMPATIBLE"
-        - "INVALID_ID"
-        - "INVALID_KEY"
-        - "UNAVAILABLE_ID"
-        - "SSL_UNAVAILABLE"
-        - "SERVER_DISCONNECTED"
-        - "SERVER_ERROR"
-        - "SOCKET_ERROR"
-        - "SOCKET_CLOSED"
+          - "BROWSER_INCOMPATIBLE"
+          - "INVALID_ID"
+          - "INVALID_KEY"
+          - "UNAVAILABLE_ID"
+          - "SSL_UNAVAILABLE"
+          - "SERVER_DISCONNECTED"
+          - "SERVER_ERROR"
+          - "SOCKET_ERROR"
+          - "SOCKET_CLOSED"
 
   PeerParametsers:
     type: object
@@ -1717,18 +1837,18 @@ definitions:
     type: object
     properties:
       rtcp:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10004
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
 
   AddTrackConstraints:
     type: object
@@ -1769,7 +1889,7 @@ definitions:
         example: "da-102127d9-30de-413b-93f7-41a33e39d82b"
 
 
-#GET /peers/ID/status
+  #GET /peers/ID/status
   PeerStatusMessage:
     type: object
     required: [ "peer_id", "disconnected" ]
@@ -1833,9 +1953,9 @@ definitions:
         type: integer
         example: 48000
 
-#========================start DataConnection section============================
+  #========================start DataConnection section============================
 
-#GET /data_connections/ID/events
+  #GET /data_connections/ID/events
   DataConnectionEventMessage:
     type: object
     required: [ "event" ]
@@ -1844,15 +1964,15 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "OPEN"
-        - "CLOSE"
-        - "ERROR"
+          - "OPEN"
+          - "CLOSE"
+          - "ERROR"
         example: "TYPE_OF_EVENT"
       error_message:
         description: エラーの内容を示します
         type: string
 
-#GET /data_connection/ID/status
+  #GET /data_connection/ID/status
   DataConnectionStatusMessage:
     type: object
     required: [ "buffersize", "label", "metadata", "open", "reliable", "serialization", "type" ]
@@ -1885,14 +2005,24 @@ definitions:
         type: string
         example: "DATA"
 
+  #GET /data/connections/{data_connection_id}/webrtc-statistics
+  DataConnectionWebRTCStatisticsParams:
+    type: object
+    properties:
+      command_type:
+        type: string
+        example: "DATA_CONNECTION_WEBRTC_STATISTICS"
+      params:
+        description: 該当のDataChannelに関するWebRTCのstatisticsが格納されます
+        type: object
 
 
 
-#========================start MediaConnection section============================
+  #========================start MediaConnection section============================
 
 
 
-#GET /media_connections/ID/events
+  #GET /media_connections/ID/events
   MediaConnectionEventMessage:
     type: object
     required: [ "event" ]
@@ -1901,11 +2031,11 @@ definitions:
         description: イベントの種別を示します
         type: string
         enum:
-        - "STREAM"
-        - "ADDTRACK"
-        - "READY"
-        - "CLOSE"
-        - "ERROR"
+          - "STREAM"
+          - "ADDTRACK"
+          - "READY"
+          - "CLOSE"
+          - "ERROR"
         example: "TYPE_OF_EVENT"
       stream_options:
         description: streamの内容を示します。streamイベントの場合のみ
@@ -1929,63 +2059,63 @@ definitions:
     type: object
     properties:
       video:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10001
-            receiver_plugins:
-              $ref: '#/definitions/PluginLoadOptions'
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10001
+          receiver_plugins:
+            $ref: '#/definitions/PluginLoadOptions'
       video_rtcp:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10004
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
       audio:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10001
-            receiver_plugins:
-              $ref: '#/definitions/PluginLoadOptions'
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10001
+          receiver_plugins:
+            $ref: '#/definitions/PluginLoadOptions'
       audio_rtcp:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10004
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Audioに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
 
-#GET /media_connections/ID/status
+  #GET /media_connections/ID/status
   MediaConnectionStatusMessage:
     type: object
     required: [ "open", "metadata", "remote_id" ]
@@ -2016,8 +2146,19 @@ definitions:
               example: 2165193637
 
 
+  #GET /media/connections/{media_connection_id}/webrtc-statistics
+  MediaConnectionWebRTCStatisticsParams:
+    type: object
+    properties:
+      command_type:
+        type: string
+        example: "MEDIA_CONNECTION_WEBRTC_STATISTICS"
+      params:
+        description: 該当のMediaStreamに関するWebRTCのstatisticsが格納されます
+        type: object
 
-#========================start Data section============================
+
+  #========================start Data section============================
 
   DataOptions:
     type: object
@@ -2063,7 +2204,7 @@ definitions:
         type: string
         example: "da-50a32bab-b3d9-4913-8e20-f79c90a6a211"
 
- #PUT /data/connections/ID/redirect/ID
+  #PUT /data/connections/ID/redirect/ID
   DataConnectionRedirectOptions:
     type: object
     required: [ "port" ]
@@ -2081,7 +2222,7 @@ definitions:
       receiver_plugins:
         $ref: '#/definitions/PluginLoadOptions'
 
-#========================start Media section============================
+  #========================start Media section============================
 
   MediaOptions:
     type: object
@@ -2196,33 +2337,33 @@ definitions:
     type: object
     properties:
       media:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10001
-            receiver_plugins:
-              $ref: '#/definitions/PluginLoadOptions'
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Mediaの転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Mediaの転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10001
+          receiver_plugins:
+            $ref: '#/definitions/PluginLoadOptions'
       media_rtcp:
-          type: object
-          properties:
-            ip_v4:
-              type: string
-              description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            ip_v6:
-              type: string
-              description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
-            port:
-              type: integer
-              format: uint16
-              example: 10004
+        type: object
+        properties:
+          ip_v4:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv4アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          ip_v6:
+            type: string
+            description: Videoに対応するRTCP情報の転送先IPv6アドレスを指定します。ip_v4またはip_v6アドレスのいずれかの情報は必須です。両方が指定された場合はip_v4が優先されます
+          port:
+            type: integer
+            format: uint16
+            example: 10004
 
   MediaConnectionAcceptTrackResponse:
     type: object
@@ -2263,19 +2404,19 @@ definitions:
     required: [ "port" ]
     description: どのMediaに対するRTCP情報をRedirectするのか特定するために、Mediaの受信に利用しているIPアドレスとポート番号を指定します
     properties:
-        port:
-          description: Mediaを待ち受けるポート番号です
-          type: integer
-          format: uint16
-          example: 10001
-        ip_v4:
-          description: Mediaを待ち受けるIPv4アドレスです。ip_v4もしくはip_v6のいずれかは必須です
-          type: string
-        ip_v6:
-          description: Mediaを待ち受けるIPv6アドレスです。ip_v4もしくはip_v6のいずれかは必須です
-          type: string
+      port:
+        description: Mediaを待ち受けるポート番号です
+        type: integer
+        format: uint16
+        example: 10001
+      ip_v4:
+        description: Mediaを待ち受けるIPv4アドレスです。ip_v4もしくはip_v6のいずれかは必須です
+        type: string
+      ip_v6:
+        description: Mediaを待ち受けるIPv6アドレスです。ip_v4もしくはip_v6のいずれかは必須です
+        type: string
 
-#========================start Plugin section============================
+  #========================start Plugin section============================
 
   PluginLoadOptions:
     type: array
