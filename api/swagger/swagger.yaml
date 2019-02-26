@@ -675,10 +675,9 @@ paths:
           required: true
           type: "string"
           format: "string"
-        - name: stats_types
-          type: array
-          items:
-            type: string
+        - name: stats_type
+          type: string
+          example: "class_b"
           in: query
           description: statisticsの特定のフィールドのみが必要な場合、フィールド名を限定するために指定します。statisticsのJSONのうち第一階層のフィールド名を指定できます。存在しないフィールドを指定した場合はエラーになります
           required: false
@@ -709,7 +708,7 @@ paths:
                         message:
                           type: string
         '403':
-          description: Forbidden(stats_typesで指定したフィールドが存在しない場合)
+          description: Forbidden(stats_typeで指定したフィールドが存在しない場合)
         '404':
           description: Not Found
         '405':
@@ -1413,10 +1412,9 @@ paths:
           required: true
           type: "string"
           format: "string"
-        - name: stats_types
-          type: array
-          items:
-            type: string
+        - name: stats_type
+          type: string
+          example: "class_a"
           in: query
           description: statisticsの特定のフィールドのみが必要な場合、フィールド名を限定するために指定します。statisticsのJSONのうち第一階層のフィールド名を指定できます。存在しないフィールドを指定した場合はエラーになります
           required: false
@@ -1447,7 +1445,7 @@ paths:
                         message:
                           type: string
         '403':
-          description: Forbidden(stats_typesで指定したフィールドが存在しない場合)
+          description: Forbidden(stats_typeで指定したフィールドが存在しない場合)
         '404':
           description: Not Found
         '405':
@@ -2013,8 +2011,19 @@ definitions:
         type: string
         example: "DATA_CONNECTION_WEBRTC_STATISTICS"
       params:
-        description: 該当のDataChannelに関するWebRTCのstatisticsが格納されます
         type: object
+        description: 該当のDataChannelに関するWebRTCのstatisticsが格納されます
+        properties:
+          class_a:
+            type: object
+            properties:
+              field_a:
+                type: object
+          class_b:
+            type: object
+            properties:
+              field_b:
+                type: object
 
 
 
@@ -2155,7 +2164,17 @@ definitions:
         example: "MEDIA_CONNECTION_WEBRTC_STATISTICS"
       params:
         description: 該当のMediaStreamに関するWebRTCのstatisticsが格納されます
-        type: object
+        properties:
+          class_a:
+            type: object
+            properties:
+              field_a:
+                type: object
+          class_b:
+            type: object
+            properties:
+              field_b:
+                type: object
 
 
   #========================start Data section============================
