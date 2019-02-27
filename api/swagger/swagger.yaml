@@ -677,7 +677,6 @@ paths:
           format: "string"
         - name: stats_type
           type: string
-          example: "class_b"
           in: query
           description: statisticsの特定のフィールドのみが必要な場合、フィールド名を限定するために指定します。statisticsのJSONのうち第一階層のフィールド名を指定できます。存在しないフィールドを指定した場合はエラーになります
           required: false
@@ -1414,7 +1413,6 @@ paths:
           format: "string"
         - name: stats_type
           type: string
-          example: "class_a"
           in: query
           description: statisticsの特定のフィールドのみが必要な場合、フィールド名を限定するために指定します。statisticsのJSONのうち第一階層のフィールド名を指定できます。存在しないフィールドを指定した場合はエラーになります
           required: false
@@ -2015,15 +2013,19 @@ definitions:
         description: 該当のDataChannelに関するWebRTCのstatisticsが格納されます
         properties:
           class_a:
-            type: object
-            properties:
-              field_a:
-                type: object
+            type: array
+            items:
+              type: object
+              properties:
+                field_a:
+                  type: object
           class_b:
-            type: object
-            properties:
-              field_b:
-                type: object
+            type: array
+            items:
+              type: object
+              properties:
+                field_b:
+                  type: object
 
 
 
@@ -2166,15 +2168,19 @@ definitions:
         description: 該当のMediaStreamに関するWebRTCのstatisticsが格納されます
         properties:
           class_a:
-            type: object
-            properties:
-              field_a:
-                type: object
+            type: array
+            items:
+              type: object
+              properties:
+                field_a:
+                  type: object
           class_b:
-            type: object
-            properties:
-              field_b:
-                type: object
+            type: array
+            items:
+              type: object
+              properties:
+                field_b:
+                  type: object
 
 
   #========================start Data section============================
