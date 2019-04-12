@@ -1453,6 +1453,62 @@ paths:
         '408':
           description: Request Timeout
 
+  /media/connections/{media_connection_id}/bitrate-events:
+    get:
+      tags:
+        - 3.media
+      summary: MediaConnectionのbitrateコントローラーが保持しているbitrateが変化した場合に通知します
+      description: 通信中にbitrateの推定値を計算し、それを出力します。この推定は映像を伝送しているときのみ計算されます
+      operationId: media_connection_bitrate_events
+      produces:
+        - application/json
+      parameters:
+        - name: "media_connection_id"
+          in: "path"
+          description: "MediaConnectionを特定するためのIDを指定します"
+          required: true
+          type: "string"
+          format: "string"
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+                media_connection_id:
+                  type: string
+                  example: "mc-102127d9-30de-413b-93f7-41a33e39d82b"
+                bitrate:
+                  type: integer
+                  example: 1000
+        '400':
+          description: Invalid input
+          schema:
+            required: [ "command_type", "params" ]
+            properties:
+              command_type:
+                type: string
+                example: "MEDIA_CONNECTION_WEBRTC_STATISTICS"
+              params:
+                type: object
+                required: [ "errors" ]
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        field:
+                          type: string
+                        message:
+                          type: string
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found (media_connection_idが間違っている場合)
+        '408':
+          description: Request Timeout
+          
   #=============================plugin section=======================
 
   /plugin/{plugin_id}:
